@@ -1,7 +1,8 @@
 import React from "react";
+import { SettingsPage } from "../../emailService";
 
 const App = () => {
-  return <div>Hello World</div>;
+  return <SettingsPage />;
 };
 
 export default App;
