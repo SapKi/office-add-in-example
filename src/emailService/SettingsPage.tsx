@@ -253,7 +253,8 @@ const SettingsPage: React.FC = () => {
                       <td style={{ padding: "12px 16px" }}>
                         <button
                           type="button"
-                          aria-label="Delete user"
+                          aria-label={`Delete ${row.userName}`}
+                          onClick={() => setUsers((prev) => prev.filter((u) => u.id !== row.id))}
                           style={{
                             padding: 4,
                             border: "none",
@@ -273,7 +274,11 @@ const SettingsPage: React.FC = () => {
 
             {/* Email input area - the AddUsersByEmail component */}
             <div style={{ backgroundColor: "#fff", padding: "16px", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
-              <AddUsersByEmail onEmailsChange={handleEmailsChange} onSubmit={handleSubmit} />
+              <AddUsersByEmail
+              existingEmails={users.map((u) => u.email)}
+              onEmailsChange={handleEmailsChange}
+              onSubmit={handleSubmit}
+            />
             </div>
           </>
         )}

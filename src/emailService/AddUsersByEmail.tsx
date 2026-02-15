@@ -11,6 +11,8 @@ function generateId(): string {
 
 export interface AddUsersByEmailProps extends AddUsersByEmailCallbacks {
   className?: string;
+  /** Emails already in the users table; suggestions exclude these until the user is deleted. */
+  existingEmails?: string[];
 }
 
 /**
@@ -23,6 +25,7 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
   onEmailsChange,
   onSubmit,
   className,
+  existingEmails = [],
 }) => {
   const [chips, setChips] = useState<{ id: string; email: string }[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -37,13 +40,15 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
 
   const loadSuggestions = useCallback(async () => {
     const list = await fetchSuggestedEmails();
-    const existing = new Set(chips.map((c) => c.email));
-    setSuggestions(list.filter((e) => !existing.has(e)));
-  }, [chips]);
+    const fromChips = chips.map((c) => c.email.toLowerCase());
+    const fromTable = existingEmails.map((e) => e.trim().toLowerCase());
+    const existing = fromChips.concat(fromTable);
+    setSuggestions(list.filter((e) => existing.indexOf(e.trim().toLowerCase()) === -1));
+  }, [chips, existingEmails]);
 
   useEffect(() => {
     if (showSuggestions) loadSuggestions();
-  }, [showSuggestions]);
+  }, [showSuggestions, loadSuggestions]);
 
   const addEmail = useCallback((email: string) => {
     const trimmed = email.trim().toLowerCase();
