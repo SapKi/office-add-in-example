@@ -46,13 +46,15 @@ const EmailInputField: React.FC<EmailInputFieldProps> = ({
         onClick={onInputClick}
         style={{
           display: "flex",
-          flexWrap: "wrap",
+          flexWrap: "nowrap",
           alignItems: "center",
           minHeight: "40px",
           padding: "6px 12px",
           border: "1px solid #d1d5db",
           borderRadius: "8px",
           backgroundColor: "#fff",
+          overflowX: "auto",
+          overflowY: "hidden",
         }}
       >
         {chips.map((chip) => (
@@ -60,6 +62,7 @@ const EmailInputField: React.FC<EmailInputFieldProps> = ({
             key={chip.id}
             email={chip.email}
             onRemove={() => onRemoveChip(chip.id)}
+            noMarginBottom
           />
         ))}
         {overflowCount > 0 && (
@@ -71,15 +74,17 @@ const EmailInputField: React.FC<EmailInputFieldProps> = ({
             style={{
               display: "inline-flex",
               alignItems: "center",
-              padding: "4px 10px",
+              flexShrink: 0,
+              padding: "6px 12px",
               marginRight: "6px",
-              marginBottom: "6px",
-              borderRadius: "16px",
-              backgroundColor: "#e5e7eb",
-              color: "#374151",
+              marginBottom: 0,
+              borderRadius: "999px",
+              backgroundColor: "#D0D5DD",
+              color: "#344054",
               fontSize: "14px",
               fontWeight: 500,
               cursor: "pointer",
+              border: "none",
             }}
           >
             +{overflowCount}

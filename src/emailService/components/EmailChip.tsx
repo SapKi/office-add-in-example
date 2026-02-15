@@ -3,25 +3,32 @@ import React from "react";
 export interface EmailChipProps {
   email: string;
   onRemove: () => void;
+  /** "primary" = modal chip style (#D0D5DD) */
+  variant?: "default" | "primary";
+  /** Set true in single-line input to avoid extra row height */
+  noMarginBottom?: boolean;
 }
 
 /**
  * Single email chip with remove (x) action. Child notifies parent via onRemove.
  */
-const EmailChip: React.FC<EmailChipProps> = ({ email, onRemove }) => {
+const EmailChip: React.FC<EmailChipProps> = ({ email, onRemove, variant = "default", noMarginBottom = false }) => {
+  const isPrimary = variant === "primary";
   return (
     <span
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: "4px",
-        padding: "4px 8px",
-        borderRadius: "16px",
-        backgroundColor: "#e5e7eb",
-        color: "#374151",
+        gap: "6px",
+        padding: "6px 12px",
+        borderRadius: "999px",
+        backgroundColor: isPrimary ? "#D0D5DD" : "#f3f4f6",
+        color: isPrimary ? "#344054" : "#1f2937",
         fontSize: "14px",
+        fontWeight: isPrimary ? 500 : 400,
         marginRight: "6px",
-        marginBottom: "6px",
+        marginBottom: noMarginBottom ? 0 : "6px",
+        flexShrink: 0,
       }}
     >
       {email}
@@ -35,8 +42,8 @@ const EmailChip: React.FC<EmailChipProps> = ({ email, onRemove }) => {
           border: "none",
           background: "none",
           cursor: "pointer",
-          color: "#6b7280",
-          fontSize: "14px",
+          color: isPrimary ? "#344054" : "#6b7280",
+          fontSize: "16px",
           lineHeight: 1,
         }}
       >

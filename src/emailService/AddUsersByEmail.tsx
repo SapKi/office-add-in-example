@@ -5,11 +5,11 @@ import EmailInputField from "./components/EmailInputField";
 import ChipsPopover from "./components/ChipsPopover";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const CHIP_WIDTH_BASE = 28;
-const CHIP_WIDTH_PER_CHAR = 8;
-const INPUT_PADDING = 24;
-const MIN_INPUT_WIDTH = 120;
-const PLUS_N_RESERVE = 50;
+const CHIP_WIDTH_BASE = 24;
+const CHIP_WIDTH_PER_CHAR = 7;
+const INPUT_PADDING = 20;
+const MIN_INPUT_WIDTH = 80;
+const PLUS_N_RESERVE = 40;
 
 function getVisibleCount(chips: { id: string; email: string }[], containerWidth: number): number {
   if (containerWidth <= 0) return chips.length;

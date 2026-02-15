@@ -26,34 +26,36 @@ const ChipsPopover: React.FC<ChipsPopoverProps> = ({
       onMouseLeave={onMouseLeave}
       style={{
         position: "absolute",
-        left: 0,
         right: 0,
         bottom: "100%",
-        marginBottom: "4px",
+        marginBottom: "6px",
+        width: "380px",
+        maxWidth: "calc(100vw - 32px)",
         backgroundColor: "#fff",
         border: "1px solid #e5e7eb",
-        borderRadius: "8px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-        maxHeight: "200px",
+        borderRadius: "10px",
+        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+        maxHeight: "260px",
         overflowY: "auto",
         zIndex: 20,
-        padding: "8px 12px",
+        padding: "12px 16px",
       }}
     >
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          gap: "4px",
+          flexWrap: "wrap",
+          gap: "8px 10px",
+          alignContent: "flex-start",
         }}
       >
         {chips.map((chip) => (
-          <div key={chip.id} style={{ display: "flex", alignItems: "center" }}>
-            <EmailChip
-              email={chip.email}
-              onRemove={() => onRemoveChip(chip.id)}
-            />
-          </div>
+          <EmailChip
+            key={chip.id}
+            email={chip.email}
+            onRemove={() => onRemoveChip(chip.id)}
+            variant="primary"
+          />
         ))}
       </div>
     </div>
