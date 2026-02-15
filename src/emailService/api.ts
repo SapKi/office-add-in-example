@@ -4,11 +4,16 @@
 
 /** Dummy suggested/recent emails for the dropdown */
 const DUMMY_SUGGESTED_EMAILS: string[] = [
-  "email@example.long.com",
-  "email@long.com",
-  "user@company.com",
-  "admin@example.com",
-  "member@team.org",
+  "sarah.chen@company.com",
+  "michael.johnson@acme.io",
+  "jessica.williams@startup.co",
+  "david.kim@legal-firm.com",
+  "emma.rodriguez@consulting.org",
+  "james.wilson@finance.com",
+  "olivia.brown@hr-partners.com",
+  "alex.martinez@design-studio.com",
+  "sophia.anderson@tech-corp.com",
+  "daniel.taylor@operations.io",
 ];
 
 /**

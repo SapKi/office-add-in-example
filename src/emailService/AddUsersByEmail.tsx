@@ -108,7 +108,7 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
       className={className}
       style={{
         display: "flex",
-        alignItems: "flex-start",
+        alignItems: "center",
         gap: "12px",
         flexWrap: "wrap",
       }}
@@ -135,6 +135,7 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
         onClick={handleSubmit}
         style={{
           padding: "8px 20px",
+          marginTop: "4px",
           backgroundColor: "#2563eb",
           color: "#fff",
           border: "none",
@@ -143,6 +144,7 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
           fontWeight: 500,
           cursor: "pointer",
           whiteSpace: "nowrap",
+          alignSelf: "center",
         }}
       >
         Add Users ({chips.length + (inputValue.trim() ? 1 : 0)})
