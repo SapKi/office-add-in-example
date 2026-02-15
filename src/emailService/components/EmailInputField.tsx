@@ -43,6 +43,7 @@ const EmailInputField: React.FC<EmailInputFieldProps> = ({
     <div style={{ position: "relative", flex: 1, minWidth: 0 }}>
       <div
         role="presentation"
+        className="email-input-row"
         onClick={onInputClick}
         style={{
           display: "flex",
@@ -78,8 +79,8 @@ const EmailInputField: React.FC<EmailInputFieldProps> = ({
               padding: "6px 12px",
               marginRight: "6px",
               marginBottom: 0,
-              borderRadius: "999px",
-              backgroundColor: "#D0D5DD",
+              borderRadius: "6px",
+              backgroundColor: "#dfe8f7",
               color: "#344054",
               fontSize: "14px",
               fontWeight: 500,

@@ -3,7 +3,7 @@ import React from "react";
 export interface EmailChipProps {
   email: string;
   onRemove: () => void;
-  /** "primary" = modal chip style (#D0D5DD) */
+  /** "primary" = modal chip style (#dfe8f7) */
   variant?: "default" | "primary";
   /** Set true in single-line input to avoid extra row height */
   noMarginBottom?: boolean;
@@ -21,8 +21,8 @@ const EmailChip: React.FC<EmailChipProps> = ({ email, onRemove, variant = "defau
         alignItems: "center",
         gap: "6px",
         padding: "6px 12px",
-        borderRadius: "999px",
-        backgroundColor: isPrimary ? "#D0D5DD" : "#f3f4f6",
+        borderRadius: "6px",
+        backgroundColor: "#dfe8f7",
         color: isPrimary ? "#344054" : "#1f2937",
         fontSize: "14px",
         fontWeight: isPrimary ? 500 : 400,
