@@ -4,16 +4,16 @@
 
 /** Dummy suggested/recent emails for the dropdown */
 const DUMMY_SUGGESTED_EMAILS: string[] = [
-  "sarah.chen@company.com",
-  "michael.johnson@acme.io",
-  "jessica.williams@startup.co",
-  "david.kim@legal-firm.com",
-  "emma.rodriguez@consulting.org",
-  "james.wilson@finance.com",
-  "olivia.brown@hr-partners.com",
-  "alex.martinez@design-studio.com",
-  "sophia.anderson@tech-corp.com",
-  "daniel.taylor@operations.io",
+  "1sarah.chen@company.com",
+  "2michael.johnson@acme.io",
+  "3jessica.williams@startup.co",
+  "4david.kim@legal-firm.com",
+  "5emma.rodriguez@consulting.org",
+  "6james.wilson@finance.com",
+  "7olivia.brown@hr-partners.com",
+  "8alex.martinez@design-studio.com",
+  "9sophia.anderson@tech-corp.com",
+  "10daniel.taylor@operations.io",
 ];
 
 /**

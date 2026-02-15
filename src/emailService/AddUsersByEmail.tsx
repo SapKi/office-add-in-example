@@ -2,8 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { fetchSuggestedEmails, submitAddUsersByEmail } from "./api";
 import type { AddUsersByEmailCallbacks } from "./types";
 import EmailInputField from "./components/EmailInputField";
+import ChipsModal from "./components/ChipsModal";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MAX_VISIBLE_CHIPS = 3;
 
 function generateId(): string {
   return Math.random().toString(36).slice(2);
@@ -31,6 +33,10 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const visibleChips = chips.slice(0, MAX_VISIBLE_CHIPS);
+  const overflowCount = chips.length > MAX_VISIBLE_CHIPS ? chips.length - MAX_VISIBLE_CHIPS : 0;
 
   const emailList = chips.map((c) => c.email);
 
@@ -118,7 +124,9 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
         onKeyDown={handleKeyDown}
       >
         <EmailInputField
-          chips={chips}
+          chips={visibleChips}
+          overflowCount={overflowCount}
+          onOverflowClick={() => setModalOpen(true)}
           inputValue={inputValue}
           suggestions={suggestions}
           showSuggestions={showSuggestions}
@@ -129,6 +137,13 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
           onSelectSuggestion={addEmail}
           placeholder="Add emails…"
         />
+        {modalOpen && (
+          <ChipsModal
+            chips={chips}
+            onRemoveChip={removeChip}
+            onClose={() => setModalOpen(false)}
+          />
+        )}
       </div>
       <button
         type="button"

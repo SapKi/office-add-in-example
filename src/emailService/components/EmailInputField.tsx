@@ -4,6 +4,8 @@ import EmailSuggestionDropdown from "./EmailSuggestionDropdown";
 
 export interface EmailInputFieldProps {
   chips: { id: string; email: string }[];
+  overflowCount?: number;
+  onOverflowClick?: () => void;
   inputValue: string;
   suggestions: string[];
   showSuggestions: boolean;
@@ -21,6 +23,8 @@ export interface EmailInputFieldProps {
  */
 const EmailInputField: React.FC<EmailInputFieldProps> = ({
   chips,
+  overflowCount = 0,
+  onOverflowClick,
   inputValue,
   suggestions,
   showSuggestions,
@@ -31,9 +35,6 @@ const EmailInputField: React.FC<EmailInputFieldProps> = ({
   onSelectSuggestion,
   placeholder = "Add emails…",
 }) => {
-  const visibleChips = chips;
-  const overflowCount = 0; // Can be set by parent to show "+N" when many chips
-
   return (
     <div style={{ position: "relative", flex: 1, minWidth: 0 }}>
       <div
@@ -48,7 +49,7 @@ const EmailInputField: React.FC<EmailInputFieldProps> = ({
           backgroundColor: "#fff",
         }}
       >
-        {visibleChips.map((chip) => (
+        {chips.map((chip) => (
           <EmailChip
             key={chip.id}
             email={chip.email}
@@ -56,16 +57,29 @@ const EmailInputField: React.FC<EmailInputFieldProps> = ({
           />
         ))}
         {overflowCount > 0 && (
-          <span
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              onOverflowClick?.();
+            }}
             style={{
-              padding: "4px 8px",
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "4px 10px",
               marginRight: "6px",
+              marginBottom: "6px",
+              borderRadius: "16px",
+              backgroundColor: "#e5e7eb",
+              color: "#374151",
               fontSize: "14px",
-              color: "#6b7280",
+              fontWeight: 500,
+              border: "none",
+              cursor: "pointer",
             }}
           >
             +{overflowCount}
-          </span>
+          </button>
         )}
         <input
           type="text"
@@ -73,7 +87,7 @@ const EmailInputField: React.FC<EmailInputFieldProps> = ({
           onChange={(e) => onInputChange(e.target.value)}
           onFocus={onInputFocus}
           onBlur={onInputBlur}
-          placeholder={chips.length === 0 ? placeholder : ""}
+          placeholder={chips.length === 0 && overflowCount === 0 ? placeholder : ""}
           style={{
             flex: 1,
             minWidth: "120px",
