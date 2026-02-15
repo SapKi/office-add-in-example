@@ -55,7 +55,6 @@ function generateUserId(): string {
 const SettingsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"Users" | "Nav Item">("Users");
   const [users, setUsers] = useState<UserRow[]>(initialUsers);
-  const [toast, setToast] = useState<string | null>(null);
 
   const handleEmailsChange = useCallback((_emails: string[]) => {}, []);
 
@@ -70,8 +69,6 @@ const SettingsPage: React.FC = () => {
       role: "Member",
     }));
     setUsers((prev) => [...prev, ...newRows]);
-    setToast("Users / User Added successfully toast");
-    setTimeout(() => setToast(null), 3000);
   }, []);
 
   return (
@@ -122,24 +119,6 @@ const SettingsPage: React.FC = () => {
 
       {/* Main content */}
       <main style={{ flex: 1, padding: "24px" }}>
-        {toast && (
-          <div
-            style={{
-              position: "fixed",
-              top: 16,
-              left: 256,
-              padding: "12px 20px",
-              backgroundColor: "#111",
-              color: "#fff",
-              borderRadius: "8px",
-              fontSize: "14px",
-              zIndex: 100,
-            }}
-          >
-            {toast}
-          </div>
-        )}
-
         <div style={{ marginBottom: "8px", fontSize: "13px", color: "#6b7280" }}>
           Contracts &gt; Playbooks &gt; Master Service Agreement V1
         </div>
@@ -185,18 +164,20 @@ const SettingsPage: React.FC = () => {
 
         {activeTab === "Users" && (
           <>
-            {/* User table */}
+            {/* User table - scroll after 6 rows */}
             <div
               style={{
                 backgroundColor: "#fff",
                 border: "1px solid #e5e7eb",
                 borderRadius: "8px",
-                overflow: "hidden",
                 marginBottom: "24px",
+                maxHeight: "340px",
+                overflowY: "auto",
+                overflowX: "hidden",
               }}
             >
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
-                <thead>
+                <thead style={{ position: "sticky", top: 0, zIndex: 1, backgroundColor: "#f9fafb", boxShadow: "0 1px 0 0 #e5e7eb" }}>
                   <tr style={{ backgroundColor: "#f9fafb", borderBottom: "1px solid #e5e7eb" }}>
                     <th style={{ padding: "12px 16px", textAlign: "left", fontWeight: 500, color: "#374151" }}>
                       User Name
@@ -224,11 +205,12 @@ const SettingsPage: React.FC = () => {
                       <td style={{ padding: "12px 16px" }}>
                         <span
                           style={{
-                            padding: "2px 8px",
-                            borderRadius: "999px",
-                            backgroundColor: "#d1fae5",
-                            color: "#065f46",
+                            padding: "4px 10px",
+                            borderRadius: "4px",
+                            backgroundColor: row.status === "Active" ? "#d1fae5" : "#e5e7eb",
+                            color: row.status === "Active" ? "#065f46" : "#6b7280",
                             fontSize: "12px",
+                            fontWeight: 500,
                           }}
                         >
                           {row.status}
@@ -256,14 +238,28 @@ const SettingsPage: React.FC = () => {
                           aria-label={`Delete ${row.userName}`}
                           onClick={() => setUsers((prev) => prev.filter((u) => u.id !== row.id))}
                           style={{
-                            padding: 4,
+                            padding: 6,
                             border: "none",
                             background: "none",
                             cursor: "pointer",
                             color: "#6b7280",
+                            borderRadius: "6px",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = "#f3f4f6";
+                            e.currentTarget.style.color = "#374151";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = "transparent";
+                            e.currentTarget.style.color = "#6b7280";
                           }}
                         >
-                          🗑
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }}>
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            <line x1="10" y1="11" x2="10" y2="17" />
+                            <line x1="14" y1="11" x2="14" y2="17" />
+                          </svg>
                         </button>
                       </td>
                     </tr>

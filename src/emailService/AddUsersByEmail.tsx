@@ -225,7 +225,6 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
         onClick={handleSubmit}
         style={{
           padding: "8px 20px",
-          marginTop: "4px",
           backgroundColor: "#2563eb",
           color: "#fff",
           border: "none",
