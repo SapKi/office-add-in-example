@@ -1,11 +1,38 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { fetchSuggestedEmails, submitAddUsersByEmail } from "./api";
 import type { AddUsersByEmailCallbacks } from "./types";
 import EmailInputField from "./components/EmailInputField";
-import ChipsModal from "./components/ChipsModal";
+import ChipsPopover from "./components/ChipsPopover";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MAX_VISIBLE_CHIPS = 3;
+const CHIP_WIDTH_BASE = 28;
+const CHIP_WIDTH_PER_CHAR = 8;
+const INPUT_PADDING = 24;
+const MIN_INPUT_WIDTH = 120;
+const PLUS_N_RESERVE = 50;
+
+function getVisibleCount(chips: { id: string; email: string }[], containerWidth: number): number {
+  if (containerWidth <= 0) return chips.length;
+  const baseReserve = containerWidth - INPUT_PADDING - MIN_INPUT_WIDTH;
+  if (baseReserve <= 0) return 0;
+  let total = 0;
+  for (let i = 0; i < chips.length; i++) {
+    const w = CHIP_WIDTH_BASE + chips[i].email.length * CHIP_WIDTH_PER_CHAR;
+    if (total + w > baseReserve) {
+      if (i === 0) return 0;
+      const withPlus = baseReserve - PLUS_N_RESERVE;
+      total = 0;
+      for (let j = 0; j < chips.length; j++) {
+        const wj = CHIP_WIDTH_BASE + chips[j].email.length * CHIP_WIDTH_PER_CHAR;
+        if (total + wj > withPlus) return j;
+        total += wj;
+      }
+      return chips.length;
+    }
+    total += w;
+  }
+  return chips.length;
+}
 
 function generateId(): string {
   return Math.random().toString(36).slice(2);
@@ -33,10 +60,54 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const popoverCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const visibleChips = chips.slice(0, MAX_VISIBLE_CHIPS);
-  const overflowCount = chips.length > MAX_VISIBLE_CHIPS ? chips.length - MAX_VISIBLE_CHIPS : 0;
+  const visibleCount = getVisibleCount(chips, containerWidth);
+  const visibleChips = chips.slice(0, visibleCount);
+  const overflowCount = chips.length - visibleCount;
+  const overflowChips = overflowCount > 0 ? chips.slice(visibleCount) : [];
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return undefined;
+    const updateWidth = () => setContainerWidth(el.getBoundingClientRect().width);
+    updateWidth();
+    const ro = new ResizeObserver(updateWidth);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const schedulePopoverClose = useCallback(() => {
+    if (popoverCloseTimeoutRef.current) clearTimeout(popoverCloseTimeoutRef.current);
+    popoverCloseTimeoutRef.current = setTimeout(() => setPopoverOpen(false), 150);
+  }, []);
+
+  const cancelPopoverClose = useCallback(() => {
+    if (popoverCloseTimeoutRef.current) {
+      clearTimeout(popoverCloseTimeoutRef.current);
+      popoverCloseTimeoutRef.current = null;
+    }
+  }, []);
+
+  const handleOverflowMouseEnter = useCallback(() => {
+    cancelPopoverClose();
+    setPopoverOpen(true);
+  }, [cancelPopoverClose]);
+
+  const handleOverflowMouseLeave = useCallback(() => {
+    schedulePopoverClose();
+  }, [schedulePopoverClose]);
+
+  const handlePopoverMouseEnter = useCallback(() => {
+    cancelPopoverClose();
+  }, [cancelPopoverClose]);
+
+  const handlePopoverMouseLeave = useCallback(() => {
+    schedulePopoverClose();
+  }, [schedulePopoverClose]);
 
   const emailList = chips.map((c) => c.email);
 
@@ -120,28 +191,32 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
       }}
     >
       <div
-        style={{ flex: 1, minWidth: "280px" }}
+        ref={containerRef}
+        style={{ flex: 1, minWidth: "280px", position: "relative" }}
         onKeyDown={handleKeyDown}
       >
         <EmailInputField
           chips={visibleChips}
           overflowCount={overflowCount}
-          onOverflowClick={() => setModalOpen(true)}
+          onOverflowMouseEnter={handleOverflowMouseEnter}
+          onOverflowMouseLeave={handleOverflowMouseLeave}
           inputValue={inputValue}
           suggestions={suggestions}
           showSuggestions={showSuggestions}
           onInputChange={handleInputChange}
           onInputFocus={() => setShowSuggestions(true)}
           onInputBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+          onInputClick={() => setShowSuggestions(true)}
           onRemoveChip={removeChip}
           onSelectSuggestion={addEmail}
           placeholder="Add emails…"
         />
-        {modalOpen && (
-          <ChipsModal
-            chips={chips}
+        {popoverOpen && overflowCount > 0 && (
+          <ChipsPopover
+            chips={overflowChips}
             onRemoveChip={removeChip}
-            onClose={() => setModalOpen(false)}
+            onMouseEnter={handlePopoverMouseEnter}
+            onMouseLeave={handlePopoverMouseLeave}
           />
         )}
       </div>
