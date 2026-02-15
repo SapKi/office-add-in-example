@@ -1,9 +1,12 @@
 /* eslint-disable no-undef */
 
+const path = require("path");
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+
+const projectRoot = path.resolve(__dirname);
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
@@ -27,6 +30,7 @@ module.exports = async (env, options) => {
       clean: true,
     },
     resolve: {
+      modules: [path.join(projectRoot, "node_modules"), "node_modules"],
       extensions: [".ts", ".tsx", ".html", ".js"],
     },
     module: {
@@ -44,7 +48,13 @@ module.exports = async (env, options) => {
         {
           test: /\.tsx?$/,
           exclude: /node_modules/,
-          use: ["ts-loader"],
+          use: {
+            loader: "ts-loader",
+            options: {
+              configFile: path.join(projectRoot, "tsconfig.json"),
+              context: projectRoot,
+            },
+          },
         },
         {
           test: /\.html$/,

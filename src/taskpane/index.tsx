@@ -1,5 +1,7 @@
+/// <reference path="../chakra-ui-react.d.ts" />
 import * as React from "react";
 import { createRoot } from "react-dom/client";
+import { ChakraProvider } from "@chakra-ui/react";
 import App from "./components/App";
 
 /* global document, Office, HTMLElement */
@@ -11,7 +13,11 @@ let rendered = false;
 function renderApp(): void {
   if (rendered || !root) return;
   rendered = true;
-  root.render(<App />);
+  root.render(
+    <ChakraProvider>
+      <App />
+    </ChakraProvider>
+  );
 }
 
 /* Render when running inside Office */
