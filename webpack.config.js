@@ -96,7 +96,7 @@ module.exports = async (env, options) => {
     ],
     devServer: {
       hot: true,
-      open: "/taskpane.html",
+      open: false,
       headers: {
         "Access-Control-Allow-Origin": "*",
       },

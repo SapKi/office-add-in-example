@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import AddUsersByEmail from "./AddUsersByEmail";
+import type { UserRow } from "./types";
 import {
   IconHome,
   IconInvoices,
@@ -18,24 +19,34 @@ const SIDEBAR_STYLE: React.CSSProperties = {
   padding: "16px 0",
 };
 
-const DUMMY_USERS = [
+const initialUsers: UserRow[] = [
   {
     id: "1",
     userName: "Brooklyn Simmons",
     email: "email@example.long.com",
-    status: "Active" as const,
+    status: "Active",
     addedOn: "July 10, 2023",
-    role: "Admin" as const,
+    role: "Admin",
   },
   {
     id: "2",
     userName: "Jane Doe",
     email: "jane@example.com",
-    status: "Active" as const,
+    status: "Active",
     addedOn: "Aug 1, 2023",
-    role: "Member" as const,
+    role: "Member",
   },
 ];
+
+function formatAddedOn(): string {
+  const d = new Date();
+  const months = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" ");
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
+function generateUserId(): string {
+  return "u-" + Math.random().toString(36).slice(2, 11);
+}
 
 /**
  * Full Settings / Users page: sidebar, tabs, user table, and email input area.
@@ -43,15 +54,22 @@ const DUMMY_USERS = [
  */
 const SettingsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"Users" | "Nav Item">("Users");
-  const [lastAddedEmails, setLastAddedEmails] = useState<string[]>([]);
+  const [users, setUsers] = useState<UserRow[]>(initialUsers);
   const [toast, setToast] = useState<string | null>(null);
 
-  const handleEmailsChange = useCallback((emails: string[]) => {
-    setLastAddedEmails(emails);
-  }, []);
+  const handleEmailsChange = useCallback((_emails: string[]) => {}, []);
 
   const handleSubmit = useCallback((emails: string[]) => {
-    console.log("Add users submit:", emails);
+    const addedOn = formatAddedOn();
+    const newRows: UserRow[] = emails.map((email) => ({
+      id: generateUserId(),
+      userName: email,
+      email,
+      status: "Active",
+      addedOn,
+      role: "Member",
+    }));
+    setUsers((prev) => [...prev, ...newRows]);
     setToast("Users / User Added successfully toast");
     setTimeout(() => setToast(null), 3000);
   }, []);
@@ -199,7 +217,7 @@ const SettingsPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {DUMMY_USERS.map((row) => (
+                  {users.map((row) => (
                     <tr key={row.id} style={{ borderBottom: "1px solid #e5e7eb" }}>
                       <td style={{ padding: "12px 16px", color: "#111" }}>{row.userName}</td>
                       <td style={{ padding: "12px 16px", color: "#6b7280" }}>{row.email}</td>

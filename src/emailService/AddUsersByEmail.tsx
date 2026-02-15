@@ -55,6 +55,7 @@ const AddUsersByEmail: React.FC<AddUsersByEmailProps> = ({
     });
     setInputValue("");
     setSuggestions((s) => s.filter((e) => e !== trimmed));
+    setShowSuggestions(false);
   }, []);
 
   const removeChip = useCallback((id: string) => {

@@ -43,7 +43,10 @@ const EmailSuggestionDropdown: React.FC<EmailSuggestionDropdownProps> = ({
           key={email}
           type="button"
           role="option"
-          onClick={() => onSelect(email)}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            onSelect(email);
+          }}
           style={{
             display: "block",
             width: "100%",
