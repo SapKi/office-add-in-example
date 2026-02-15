@@ -1,24 +1,21 @@
 import React, { useCallback, useState } from "react";
 import AddUsersByEmail from "./AddUsersByEmail";
+import {
+  IconHome,
+  IconInvoices,
+  IconContracts,
+  IconCompliance,
+  IconLegalAgent,
+  IconLegalCenter,
+  IconSettings,
+} from "./components/SidebarIcons";
 
 const SIDEBAR_STYLE: React.CSSProperties = {
-  width: "220px",
+  width: "240px",
   minHeight: "100vh",
   backgroundColor: "#fff",
   borderRight: "1px solid #e5e7eb",
   padding: "16px 0",
-};
-
-const NAV_ITEM_STYLE: React.CSSProperties = {
-  display: "block",
-  width: "100%",
-  padding: "10px 20px",
-  border: "none",
-  background: "none",
-  textAlign: "left",
-  fontSize: "14px",
-  color: "#374151",
-  cursor: "pointer",
 };
 
 const DUMMY_USERS = [
@@ -66,20 +63,41 @@ const SettingsPage: React.FC = () => {
         <div style={{ padding: "0 20px 16px", fontSize: "18px", fontWeight: 600, color: "#111" }}>
           chamelio
         </div>
-        <nav>
-          <button style={NAV_ITEM_STYLE}>Home</button>
-          <button style={NAV_ITEM_STYLE}>Invoices</button>
-          <button style={NAV_ITEM_STYLE}>Contracts</button>
-          <button style={{ ...NAV_ITEM_STYLE, paddingLeft: "32px" }}>Contracts Repository</button>
-          <button style={{ ...NAV_ITEM_STYLE, paddingLeft: "32px" }}>Insights</button>
-          <button style={{ ...NAV_ITEM_STYLE, paddingLeft: "32px", backgroundColor: "#eff6ff", color: "#2563eb" }}>
-            Playbooks
+        <nav className="sidebar-nav-wrap">
+          <button type="button" className="sidebar-nav-btn">
+            <IconHome />
+            <span>Home</span>
           </button>
-          <button style={NAV_ITEM_STYLE}>Compliance</button>
-          <button style={NAV_ITEM_STYLE}>Legal Agent</button>
-          <button style={NAV_ITEM_STYLE}>Legal Center</button>
-          <button style={{ ...NAV_ITEM_STYLE, backgroundColor: "#f3f4f6", fontWeight: 500 }}>
-            Settings
+          <button type="button" className="sidebar-nav-btn">
+            <IconInvoices />
+            <span>Invoices</span>
+          </button>
+          <button type="button" className="sidebar-nav-btn">
+            <IconContracts />
+            <span>Contracts</span>
+          </button>
+          <div className="sidebar-nav-sub-group">
+            <button type="button" className="sidebar-nav-btn sidebar-nav-sub">Contracts Repository</button>
+            <button type="button" className="sidebar-nav-btn sidebar-nav-sub">Insights</button>
+            <button type="button" className="sidebar-nav-btn sidebar-nav-sub" data-sub-active="true">
+              Playbooks
+            </button>
+          </div>
+          <button type="button" className="sidebar-nav-btn">
+            <IconCompliance />
+            <span>Compliance</span>
+          </button>
+          <button type="button" className="sidebar-nav-btn">
+            <IconLegalAgent />
+            <span>Legal Agent</span>
+          </button>
+          <button type="button" className="sidebar-nav-btn">
+            <IconLegalCenter />
+            <span>Legal Center</span>
+          </button>
+          <button type="button" className="sidebar-nav-btn" data-primary-active="true">
+            <IconSettings />
+            <span>Settings</span>
           </button>
         </nav>
       </aside>
@@ -91,7 +109,7 @@ const SettingsPage: React.FC = () => {
             style={{
               position: "fixed",
               top: 16,
-              left: 240,
+              left: 256,
               padding: "12px 20px",
               backgroundColor: "#111",
               color: "#fff",

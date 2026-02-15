@@ -9,7 +9,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Contoso Task Pane Add-in</title>
-
+    <style>
+      body, #container, #container * {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+      .sidebar-nav-wrap {
+        padding: 0 12px;
+      }
+      .sidebar-nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        width: calc(100% - 8px);
+        min-height: 36px;
+        padding: 8px 12px;
+        margin: 2px 4px;
+        border: none;
+        border-radius: 8px;
+        background: none;
+        font-size: 14px;
+        color: #374151;
+        text-align: left;
+        cursor: pointer;
+        transition: background-color 0.15s ease, color 0.15s ease;
+        box-sizing: border-box;
+      }
+      .sidebar-nav-btn:hover {
+        background-color: #f3f4f6 !important;
+        color: #111 !important;
+      }
+      .sidebar-nav-btn[data-primary-active="true"] {
+        background-color: #eff6ff !important;
+        color: #2563eb !important;
+        font-weight: 500;
+      }
+      .sidebar-nav-btn[data-primary-active="true"]:hover {
+        background-color: #dbeafe !important;
+        color: #1d4ed8 !important;
+      }
+      .sidebar-nav-btn[data-sub-active="true"] {
+        background-color: transparent !important;
+        color: #2563eb !important;
+        font-size: 13px;
+      }
+      .sidebar-nav-btn[data-sub-active="true"]:hover {
+        background-color: #f3f4f6 !important;
+        color: #1d4ed8 !important;
+      }
+      .sidebar-nav-btn:active {
+        background-color: #e5e7eb !important;
+      }
+      .sidebar-nav-sub-group {
+        padding-left: 12px;
+        margin-left: 4px;
+        border-left: 1px dotted #e5e7eb;
+      }
+      .sidebar-nav-btn.sidebar-nav-sub {
+        padding-left: 24px;
+        font-size: 13px;
+        color: #6b7280;
+      }
+    </style>
     <!-- Office JavaScript API -->
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
 </head>
