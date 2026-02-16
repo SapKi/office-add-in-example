@@ -149,6 +149,7 @@ const SearchPage: React.FC = () => {
   const toast = useToast();
 
   const results = allResults.slice(displayStart, displayStart + RESULTS_PAGE_SIZE);
+  const hasPrevious = displayStart > 0;
   const hasNext = allResults.length > RESULTS_PAGE_SIZE && displayStart < allResults.length - RESULTS_PAGE_SIZE;
 
   useEffect(() => {
@@ -304,6 +305,10 @@ const SearchPage: React.FC = () => {
     },
     [query, caseSensitive, displayStart, toast]
   );
+
+  const handlePreviousResults = useCallback(() => {
+    setDisplayStart((prev) => Math.max(0, prev - 1));
+  }, []);
 
   const handleNextResults = useCallback(() => {
     setDisplayStart((prev) =>
@@ -466,17 +471,31 @@ const SearchPage: React.FC = () => {
                 })}
               </Box>
             )}
-            {results.length > 0 && hasNext && (
-              <Button
-                size="sm"
-                variant="outline"
-                colorScheme="blue"
-                mt={2}
-                onClick={handleNextResults}
-                w="100%"
-              >
-                Next results →
-              </Button>
+            {results.length > 0 && (hasPrevious || hasNext) && (
+              <Box mt={2} display="flex" gap={2} w="100%">
+                {hasPrevious && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    colorScheme="blue"
+                    onClick={handlePreviousResults}
+                    flex={1}
+                  >
+                    ← Previous results
+                  </Button>
+                )}
+                {hasNext && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    colorScheme="blue"
+                    onClick={handleNextResults}
+                    flex={1}
+                  >
+                    Next results →
+                  </Button>
+                )}
+              </Box>
             )}
           </VStack>
         </Box>
