@@ -293,12 +293,6 @@ const SearchPage: React.FC = () => {
           matchCase: caseSensitive,
           matchWholeWordFirst: true,
         }, globalIndex);
-        toast({
-          title: "Location highlighted",
-          description: "The match is selected and highlighted in the document.",
-          status: "success",
-          duration: 2000,
-        });
       } catch (err) {
         toast({
           title: "Could not highlight",
