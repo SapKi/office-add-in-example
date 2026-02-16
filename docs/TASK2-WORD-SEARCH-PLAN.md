@@ -66,7 +66,7 @@ await Word.run(async (context) => {
 
 ```
 src/taskpane/
-  index.tsx              (unchanged; renders App)
+  index.tsx              (renders SearchPage inside ChakraProvider)
   components/
     App.tsx               (add nav/tabs: Users | Search; render SettingsPage or SearchPage)
     SearchPage.tsx        (NEW – Chakra UI: input, case-sensitive checkbox, “Search” button, top 3 results)
@@ -82,8 +82,7 @@ src/taskpane/
 1. **Add Chakra UI** – Install deps, wrap `App` (or root in `index.tsx`) with `ChakraProvider`.
 2. **Add SearchPage** – Chakra layout, input, case-sensitive checkbox, button; on submit call Word search and store top 3 results in state; display list (and optionally “no results” or “open in Word to search” when not in Word).
 3. **Wire Word search** – Helper (e.g. `searchWordDocument(query, matchCase): Promise<string[]>`) that uses `Word.run` and the pattern above; `SearchPage` calls it and shows the first 3 strings (or range previews).
-4. **Integrate into App** – Tabs or nav to switch between Task 1 (SettingsPage) and Task 2 (SearchPage).
-5. **README** – Document setup (install, npm run dev-server, sideload), assumptions (Chakra v2, one taskpane for both tasks), design (tabs, top 3 only), and challenges (e.g. Word API async, loading range text, handling “not in Word”).
+4. **README** – Document setup (install, npm run dev-server, sideload), assumptions (Chakra v2), design (top 3 only), and challenges (e.g. Word API async, loading range text, handling “not in Word”).
 
 ---
 
@@ -91,8 +90,7 @@ src/taskpane/
 
 - **Setup:** `npm install`, `npm run dev-server`, sideload manifest in Word (desktop or web).
 - **Assumptions / design:**  
-  - One taskpane for both Task 1 and Task 2; tab or nav to switch.  
-  - Chakra v2 for Task 2 UI.  
+  - Chakra v2 for search UI.  
   - “Top 3” = first 3 ranges returned by `body.search()`; we show their text (and optionally a short context).
 - **Challenges:**  
   - Word API is async and requires `context.sync()`; we use a single `Word.run` and load `items` then `.text` for the first 3.  

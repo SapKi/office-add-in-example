@@ -66,16 +66,16 @@ src/
 ├── taskpane/
 │   ├── components/
 │   │   └── SearchPage.tsx    # Main search interface
-│   ├── wordSearch.ts          # Word API search functions
+│   ├── wordSearch.ts         # Word API search functions
 │   ├── index.tsx             # Entry point
 │   └── taskpane.html         # HTML template
-├── chakra-ui-react.d.ts      # Type declarations
-└── emailService/             # (Not used - moved to separate app)
+└── chakra-ui-react.d.ts      # Type declarations
 ```
 
 ## Scripts
 
 - `npm run start:desktop` - Start dev server and sideload in Word desktop
+- `npm run start:hidden` - Start dev server in background (hidden) then sideload Word; see `RUN_SILENT.md`
 - `npm run start:web` - Start dev server and sideload in Word Online
 - `npm run dev-server` - Start webpack dev server only
 - `npm run build` - Build for production
