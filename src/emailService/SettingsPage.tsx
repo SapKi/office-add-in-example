@@ -25,7 +25,7 @@ const initialUsers: UserRow[] = [
     userName: "Brooklyn Simmons",
     email: "email@example.long.com",
     status: "Active",
-    addedOn: "July 10, 2023",
+    addedOn: "July 10, 2026",
     role: "Admin",
   },
   {
@@ -33,7 +33,7 @@ const initialUsers: UserRow[] = [
     userName: "Jane Doe",
     email: "jane@example.com",
     status: "Active",
-    addedOn: "Aug 1, 2023",
+    addedOn: "Aug 1, 2026",
     role: "Member",
   },
 ];

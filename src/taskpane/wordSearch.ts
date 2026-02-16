@@ -86,7 +86,6 @@ export async function searchWordDocument(
         });
       });
     }).catch(function (err) {
-      console.error("Word search error:", err);
       reject(err);
     });
   });
@@ -147,7 +146,6 @@ export function selectAndHighlightResult(
         resolve();
       })
       .catch(function (err) {
-        console.error("Word select/highlight error:", err);
         reject(err);
       });
   });
@@ -171,7 +169,6 @@ export function clearAllHighlights(): Promise<void> {
         resolve();
       })
       .catch(function (err) {
-        console.error("Clear highlights error:", err);
         reject(err);
       });
   });
@@ -225,7 +222,6 @@ export function highlightAllSearchMatches(
         });
       });
     }).catch(function (err) {
-      console.error("Word highlight all error:", err);
       reject(err);
     });
   });
@@ -278,7 +274,6 @@ export function insertSampleContent(): Promise<void> {
         resolve();
       })
       .catch(function (err) {
-        console.error("Insert sample content error:", err);
         reject(err);
       });
   });

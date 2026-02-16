@@ -1,5 +1,5 @@
 /// <reference path="../../chakra-ui-react.d.ts" />
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -135,7 +135,8 @@ const bounceUpDown = keyframes`
  * - Top 3 search results displayed in the add-in
  */
 const RESULTS_PAGE_SIZE = 3;
-const MAX_SEARCH_RESULTS = 10;
+/** Fetch enough matches so Next stays available until we've paged through all document matches. */
+const MAX_SEARCH_RESULTS = 50;
 
 const SearchPage: React.FC = () => {
   const [query, setQuery] = useState("");
@@ -146,7 +147,10 @@ const SearchPage: React.FC = () => {
   const [inserting, setInserting] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [sampleButtonClicked, setSampleButtonClicked] = useState(false);
+  const [isJumping, setIsJumping] = useState(false);
   const toast = useToast();
+  const toastRef = useRef(toast);
+  toastRef.current = toast;
 
   const results = allResults.slice(displayStart, displayStart + RESULTS_PAGE_SIZE);
   const hasPrevious = displayStart > 0;
@@ -185,10 +189,9 @@ const SearchPage: React.FC = () => {
           setDisplayStart(0);
         })
         .catch((err) => {
-          console.error("Search error:", err);
           setAllResults([]);
           setDisplayStart(0);
-          toast({
+          toastRef.current({
             title: "Search failed",
             description: err instanceof Error ? err.message : "Unknown error",
             status: "error",
@@ -197,7 +200,7 @@ const SearchPage: React.FC = () => {
         });
     }, 550);
     return () => clearTimeout(timer);
-  }, [query, caseSensitive, toast]);
+  }, [query, caseSensitive]);
 
   const handleInsertSample = useCallback(async () => {
     // Mark button as clicked to stop bouncing animation
@@ -306,15 +309,50 @@ const SearchPage: React.FC = () => {
     [query, caseSensitive, displayStart, toast]
   );
 
-  const handlePreviousResults = useCallback(() => {
-    setDisplayStart((prev) => Math.max(0, prev - 1));
-  }, []);
+  const handlePreviousResults = useCallback(async () => {
+    const newStart = Math.max(0, displayStart - 1);
+    if (newStart === displayStart) return;
+    if (!query.trim() || !isWordAvailable()) return;
+    try {
+      await clearAllHighlights();
+      await selectAndHighlightResult(query, {
+        matchCase: caseSensitive,
+        matchWholeWordFirst: true,
+      }, newStart);
+      setDisplayStart(newStart);
+    } catch (err) {
+      toast({
+        title: "Could not highlight",
+        description: err instanceof Error ? err.message : "Unknown error",
+        status: "error",
+        duration: 3000,
+      });
+    }
+  }, [query, caseSensitive, displayStart, toast]);
 
-  const handleNextResults = useCallback(() => {
-    setDisplayStart((prev) =>
-      Math.min(prev + 1, Math.max(0, allResults.length - RESULTS_PAGE_SIZE))
+  const handleNextResults = useCallback(async () => {
+    const newStart = Math.min(
+      displayStart + 1,
+      Math.max(0, allResults.length - RESULTS_PAGE_SIZE)
     );
-  }, [allResults.length]);
+    if (newStart === displayStart) return;
+    if (!query.trim() || !isWordAvailable()) return;
+    try {
+      await clearAllHighlights();
+      await selectAndHighlightResult(query, {
+        matchCase: caseSensitive,
+        matchWholeWordFirst: true,
+      }, newStart);
+      setDisplayStart(newStart);
+    } catch (err) {
+      toast({
+        title: "Could not highlight",
+        description: err instanceof Error ? err.message : "Unknown error",
+        status: "error",
+        duration: 3000,
+      });
+    }
+  }, [query, caseSensitive, displayStart, allResults.length, toast]);
 
   const wordAvailable = isWordAvailable();
 
