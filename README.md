@@ -1,65 +1,115 @@
-## Installation
+# Word Add-in - Search Interface
 
-1. Install the dependencies:
+Microsoft Word add-in that provides document search functionality.
 
-   ```bash
-   npm install
-   ```
+## Features
 
-2. Run the development server:
+- ✅ Text input for entering search queries
+- ✅ Case sensitive checkbox option
+- ✅ Displays top 3 search results
+- ✅ Uses Word JavaScript API (`Body.search()`)
 
-   ```bash
-   npm run dev-server
-   ```
+## Quick Start
 
-3. Sideload the add-in into Word (Desktop):
+### Prerequisites
 
-   ```bash
-   npm run start:desktop
-   ```
+- Node.js (v16+)
+- Microsoft Word (Office 2021+ or Microsoft 365)
+- npm
 
-4. Or sideload into Word on the web:
+### Installation
 
-   ```bash
-   npm run start:web
-   ```
+```bash
+npm install
+```
 
-5. Stop sideloading:
+### Running the Add-in
 
-   ```bash
-   npm run stop
-   ```
+**Recommended way (one command):**
 
----
+```bash
+npm run start:desktop
+```
 
-## Task 1 – User creation by email
+This will:
+1. Start the webpack dev server on `https://localhost:3000`
+2. Automatically sideload the add-in into Word desktop
+3. Open Word (or use existing instance)
+4. Display the Search interface in the task pane
 
-See **`src/emailService/README.md`** for the email input component (bi-directional parent–child communication, dummy API, Figma-aligned UI).
+**Alternative (two terminals):**
 
----
+```bash
+# Terminal 1: Start dev server
+npm run dev-server
 
-## Task 2 – Word JS Add-in Search
+# Terminal 2: Sideload add-in
+npm run start:desktop
+```
 
-### Setup
+### Testing the Search
 
-- Same as above. After `npm install`, the taskpane includes both **Users** (Task 1) and **Search** (Task 2) tabs.
-- **Chakra UI** is used for the Search interface (`@chakra-ui/react` v2, React 18–compatible).
+1. **Insert sample text** (optional):
+   - Click "Insert sample text to test search" button
+   - This adds sample paragraphs to your document
 
-### Features
+2. **Search the document**:
+   - Enter a search term (e.g., "document", "search", "sample")
+   - Toggle "Case sensitive" if needed
+   - Click "Search" or press Enter
+   - See top 3 results displayed below
 
-- **Search tab:** Text input for search query, **Case sensitive** checkbox, **Search** button.
-- **Top 3 results:** The first 3 matches from the Word document are shown in the add-in (using `Word.run` and `document.body.search()` with `SearchOptions.matchCase`).
-- Search runs only when the add-in is opened **inside Word** (desktop or web); otherwise a message is shown.
+## Project Structure
 
-### Assumptions and design decisions
+```
+src/
+├── taskpane/
+│   ├── components/
+│   │   └── SearchPage.tsx    # Main search interface
+│   ├── wordSearch.ts          # Word API search functions
+│   ├── index.tsx             # Entry point
+│   └── taskpane.html         # HTML template
+├── chakra-ui-react.d.ts      # Type declarations
+└── emailService/             # (Not used - moved to separate app)
+```
 
-- **Single taskpane:** Both Task 1 (Users) and Task 2 (Search) live in one taskpane, with tabs to switch between them.
-- **Chakra UI v2:** Used for Task 2 to stay compatible with React 18 and common Node versions (Chakra v3 may require Node 20+).
-- **Top 3 results:** Implemented as the first 3 items in the `RangeCollection` returned by `body.search()`; each result shows the matched range’s text.
-- **Case sensitive:** Wired to Word’s `SearchOptions.matchCase` (on = case sensitive, off = ignore case).
+## Scripts
 
-### Challenges and how they were addressed
+- `npm run start:desktop` - Start dev server and sideload in Word desktop
+- `npm run start:web` - Start dev server and sideload in Word Online
+- `npm run dev-server` - Start webpack dev server only
+- `npm run build` - Build for production
+- `npm run stop` - Stop the add-in debugging session
 
-1. **Word API is async:** Search uses `Word.run()` and two `context.sync()` calls (one to load search result items, one to load each range’s `text`). The helper (`src/taskpane/wordSearch.ts`) returns a Promise that resolves with the top 3 result strings.
-2. **Running outside Word:** When the taskpane is opened in a browser without Word, `Word` is undefined. The Search UI checks `isWordAvailable()` and shows a short message instead of calling the API.
-3. **Loading result text:** Each `Range` in the collection must have `.load("text")` called before `context.sync()` to read `.text`; the helper does this for the first 3 ranges only.
+## Troubleshooting
+
+**Add-in not loading?**
+- Make sure the dev server is running (`npm run dev-server`)
+- Accept the self-signed HTTPS certificate when prompted
+- Check Word version (requires Office 2021+ or Microsoft 365)
+
+**Search not working?**
+- Ensure you're running inside Word (not standalone browser)
+- Check browser console for errors
+- Verify the document has content to search
+
+**Port conflicts?**
+- Default port is 3000 (HTTPS)
+- Change in `package.json` → `config.dev_server_port`
+
+## Development
+
+The add-in uses:
+- **React 18** with TypeScript
+- **Chakra UI** for components
+- **Word JavaScript API** for document search
+- **Webpack** for bundling
+
+## API Reference
+
+The search uses the Word API:
+```typescript
+context.document.body.search(searchText, { matchCase: boolean })
+```
+
+Returns: `Word.RangeCollection` - collection of matching ranges

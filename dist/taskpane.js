@@ -6408,234 +6408,6 @@ var suppressOthers = function (originalTarget, parentNode, markerName) {
 
 /***/ }),
 
-/***/ "./src/emailService/api.ts":
-/*!*********************************!*\
-  !*** ./src/emailService/api.ts ***!
-  \*********************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-/* provided dependency */ var Promise = __webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js")["Promise"];
-
-
-/**
- * Dummy API for email service. Replace with real API when available.
- */
-var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
-var __generator = this && this.__generator || function (thisArg, body) {
-  var _ = {
-      label: 0,
-      sent: function () {
-        if (t[0] & 1) throw t[1];
-        return t[1];
-      },
-      trys: [],
-      ops: []
-    },
-    f,
-    y,
-    t,
-    g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-  return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-    return this;
-  }), g;
-  function verb(n) {
-    return function (v) {
-      return step([n, v]);
-    };
-  }
-  function step(op) {
-    if (f) throw new TypeError("Generator is already executing.");
-    while (g && (g = 0, op[0] && (_ = 0)), _) try {
-      if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-      if (y = 0, t) op = [op[0] & 2, t.value];
-      switch (op[0]) {
-        case 0:
-        case 1:
-          t = op;
-          break;
-        case 4:
-          _.label++;
-          return {
-            value: op[1],
-            done: false
-          };
-        case 5:
-          _.label++;
-          y = op[1];
-          op = [0];
-          continue;
-        case 7:
-          op = _.ops.pop();
-          _.trys.pop();
-          continue;
-        default:
-          if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-            _ = 0;
-            continue;
-          }
-          if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-            _.label = op[1];
-            break;
-          }
-          if (op[0] === 6 && _.label < t[1]) {
-            _.label = t[1];
-            t = op;
-            break;
-          }
-          if (t && _.label < t[2]) {
-            _.label = t[2];
-            _.ops.push(op);
-            break;
-          }
-          if (t[2]) _.ops.pop();
-          _.trys.pop();
-          continue;
-      }
-      op = body.call(thisArg, _);
-    } catch (e) {
-      op = [6, e];
-      y = 0;
-    } finally {
-      f = t = 0;
-    }
-    if (op[0] & 5) throw op[1];
-    return {
-      value: op[0] ? op[1] : void 0,
-      done: true
-    };
-  }
-};
-var __spreadArray = this && this.__spreadArray || function (to, from, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-    if (ar || !(i in from)) {
-      if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-      ar[i] = from[i];
-    }
-  }
-  return to.concat(ar || Array.prototype.slice.call(from));
-};
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.fetchSuggestedEmails = fetchSuggestedEmails;
-exports.submitAddUsersByEmail = submitAddUsersByEmail;
-/** Dummy suggested/recent emails for the dropdown */
-var DUMMY_SUGGESTED_EMAILS = ["1sarah.chen@company.com", "2michael.johnson@acme.io", "3jessica.williams@startup.co", "4david.kim@legal-firm.com", "5emma.rodriguez@consulting.org", "6james.wilson@finance.com", "7olivia.brown@hr-partners.com", "8alex.martinez@design-studio.com", "9sophia.anderson@tech-corp.com", "10daniel.taylor@operations.io"];
-/**
- * Fetches suggested emails (e.g. recent or from API). Dummy implementation.
- */
-function fetchSuggestedEmails() {
-  return __awaiter(this, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-      switch (_a.label) {
-        case 0:
-          return [4 /*yield*/, new Promise(function (r) {
-            return setTimeout(r, 300);
-          })];
-        case 1:
-          _a.sent();
-          return [2 /*return*/, __spreadArray([], DUMMY_SUGGESTED_EMAILS, true)];
-      }
-    });
-  });
-}
-/**
- * Submits list of emails to add users. Dummy implementation - logs to console.
- */
-function submitAddUsersByEmail(emails) {
-  return __awaiter(this, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-      switch (_a.label) {
-        case 0:
-          return [4 /*yield*/, new Promise(function (r) {
-            return setTimeout(r, 200);
-          })];
-        case 1:
-          _a.sent();
-          console.log("[emailService] Add users by email:", emails);
-          return [2 /*return*/];
-      }
-    });
-  });
-}
-
-/***/ }),
-
-/***/ "./src/emailService/index.ts":
-/*!***********************************!*\
-  !*** ./src/emailService/index.ts ***!
-  \***********************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.submitAddUsersByEmail = exports.fetchSuggestedEmails = exports.SettingsPage = exports.AddUsersByEmail = void 0;
-var AddUsersByEmail_1 = __webpack_require__(/*! ./AddUsersByEmail */ "./src/emailService/AddUsersByEmail.tsx");
-Object.defineProperty(exports, "AddUsersByEmail", ({
-  enumerable: true,
-  get: function () {
-    return __importDefault(AddUsersByEmail_1).default;
-  }
-}));
-var SettingsPage_1 = __webpack_require__(/*! ./SettingsPage */ "./src/emailService/SettingsPage.tsx");
-Object.defineProperty(exports, "SettingsPage", ({
-  enumerable: true,
-  get: function () {
-    return __importDefault(SettingsPage_1).default;
-  }
-}));
-var api_1 = __webpack_require__(/*! ./api */ "./src/emailService/api.ts");
-Object.defineProperty(exports, "fetchSuggestedEmails", ({
-  enumerable: true,
-  get: function () {
-    return api_1.fetchSuggestedEmails;
-  }
-}));
-Object.defineProperty(exports, "submitAddUsersByEmail", ({
-  enumerable: true,
-  get: function () {
-    return api_1.submitAddUsersByEmail;
-  }
-}));
-
-/***/ }),
-
 /***/ "./src/taskpane/wordSearch.ts":
 /*!************************************!*\
   !*** ./src/taskpane/wordSearch.ts ***!
@@ -6766,6 +6538,7 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports.searchWordDocument = searchWordDocument;
 exports.isWordAvailable = isWordAvailable;
+exports.insertSampleContent = insertSampleContent;
 /**
  * Searches the Word document for the given query and returns the text of the top 3 matches.
  * Only works when the add-in is running inside Word.
@@ -6811,6 +6584,31 @@ function searchWordDocument(query, options) {
  */
 function isWordAvailable() {
   return typeof Word !== "undefined";
+}
+/**
+ * Inserts sample paragraphs into the document so you can test search.
+ * Call this when the add-in is running inside Word, then search for:
+ * "document", "search", "sample", or "Word" to see results.
+ */
+function insertSampleContent() {
+  if (typeof Word === "undefined") {
+    return Promise.reject(new Error("Word API not available. Open the add-in inside Word."));
+  }
+  var sampleParagraphs = ["This is sample content for testing the document search. You can search for the word document or search.", "The Word add-in search feature finds text in your document. Try searching for \"sample\" or \"Word\" to see the top 3 results.", "Each search result shows a snippet of text from the document. Case sensitive search matches exact capitalization."];
+  return new Promise(function (resolve, reject) {
+    Word.run(function (context) {
+      var body = context.document.body;
+      sampleParagraphs.forEach(function (text) {
+        body.insertParagraph(text, "End");
+      });
+      return context.sync();
+    }).then(function () {
+      resolve();
+    }).catch(function (err) {
+      console.error("Insert sample content error:", err);
+      reject(err);
+    });
+  });
 }
 
 /***/ }),
@@ -22325,7 +22123,7 @@ module.exports = hoistNonReactStatics;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 // Module
-var code = "<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license. -->\n<!-- See LICENSE in the project root for license information -->\n\n<!doctype html>\n<html lang=\"en\" data-framework=\"typescript\">\n\n<head>\n    <meta charset=\"UTF-8\" />\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title>Contoso Task Pane Add-in</title>\n    <style>\n      body, #container, #container * {\n        font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif;\n      }\n      .sidebar-nav-wrap {\n        padding: 0 12px;\n      }\n      .sidebar-nav-btn {\n        display: inline-flex;\n        align-items: center;\n        gap: 10px;\n        width: calc(100% - 8px);\n        min-height: 36px;\n        padding: 8px 12px;\n        margin: 2px 4px;\n        border: none;\n        border-radius: 8px;\n        background: none;\n        font-size: 14px;\n        color: #374151;\n        text-align: left;\n        cursor: pointer;\n        transition: background-color 0.15s ease, color 0.15s ease;\n        box-sizing: border-box;\n      }\n      .sidebar-nav-btn:hover {\n        background-color: #f3f4f6 !important;\n        color: #111 !important;\n      }\n      .sidebar-nav-btn[data-primary-active=\"true\"] {\n        background-color: #eff6ff !important;\n        color: #2563eb !important;\n        font-weight: 500;\n      }\n      .sidebar-nav-btn[data-primary-active=\"true\"]:hover {\n        background-color: #dbeafe !important;\n        color: #1d4ed8 !important;\n      }\n      .sidebar-nav-btn[data-sub-active=\"true\"] {\n        background-color: transparent !important;\n        color: #2563eb !important;\n        font-size: 13px;\n      }\n      .sidebar-nav-btn[data-sub-active=\"true\"]:hover {\n        background-color: #f3f4f6 !important;\n        color: #1d4ed8 !important;\n      }\n      .sidebar-nav-btn:active {\n        background-color: #e5e7eb !important;\n      }\n      .sidebar-nav-sub-group {\n        padding-left: 12px;\n        margin-left: 4px;\n        border-left: 1px dotted #e5e7eb;\n      }\n      .sidebar-nav-btn.sidebar-nav-sub {\n        padding-left: 24px;\n        font-size: 13px;\n        color: #6b7280;\n      }\n      .email-input-row {\n        -ms-overflow-style: none;\n        scrollbar-width: none;\n      }\n      .email-input-row::-webkit-scrollbar {\n        display: none;\n      }\n    </style>\n    <!-- Office JavaScript API -->\n    <" + "script type=\"text/javascript\" src=\"https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js\"><" + "/script>\n</head>\n\n<body style=\"width: 100%; height: 100%; margin: 0; padding: 0;\">\n    <div id=\"container\"></div>\n\n    <!-- \n        Fluent UI React v. 9 uses modern JavaScript syntax that is not supported in\n        Trident (Internet Explorer) or EdgeHTML (Edge Legacy), so this add-in won't\n        work in Office versions that use these webviews. The script below makes the \n        following div display when an unsupported webview is in use, and hides the \n        React container div. \n    -->\n    <div id=\"tridentmessage\" style=\"display: none; padding: 10;\">\n        This add-in will not run in your version of Office. Please upgrade either to perpetual Office 2021 (or later) \n        or to a Microsoft 365 account.\n    </div>\n    <" + "script>\n        if ((navigator.userAgent.indexOf(\"Trident\") !== -1) || (navigator.userAgent.indexOf(\"Edge\") !== -1)) {\n            var tridentMessage = document.getElementById(\"tridentmessage\");\n            var normalContainer = document.getElementById(\"container\");\n            tridentMessage.style.display = \"block\";\n            normalContainer.style.display = \"none\";\n        } \n    <" + "/script>\n</body>\n\n</html>\n";
+var code = "<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license. -->\n<!-- See LICENSE in the project root for license information -->\n\n<!doctype html>\n<html lang=\"en\" data-framework=\"typescript\">\n\n<head>\n    <meta charset=\"UTF-8\" />\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title>Contoso Task Pane Add-in</title>\n    <style>\n      body, #container, #container * {\n        font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif;\n      }\n      .sidebar-nav-wrap {\n        padding: 0 12px;\n      }\n      .sidebar-nav-btn {\n        display: inline-flex;\n        align-items: center;\n        gap: 10px;\n        width: calc(100% - 8px);\n        min-height: 36px;\n        padding: 8px 12px;\n        margin: 2px 4px;\n        border: none;\n        border-radius: 8px;\n        background: none;\n        font-size: 14px;\n        color: #374151;\n        text-align: left;\n        cursor: pointer;\n        transition: background-color 0.15s ease, color 0.15s ease;\n        box-sizing: border-box;\n      }\n      .sidebar-nav-btn:hover {\n        background-color: #f3f4f6 !important;\n        color: #111 !important;\n      }\n      .sidebar-nav-btn[data-primary-active=\"true\"] {\n        background-color: #eff6ff !important;\n        color: #2563eb !important;\n        font-weight: 500;\n      }\n      .sidebar-nav-btn[data-primary-active=\"true\"]:hover {\n        background-color: #dbeafe !important;\n        color: #1d4ed8 !important;\n      }\n      .sidebar-nav-btn[data-sub-active=\"true\"] {\n        background-color: transparent !important;\n        color: #2563eb !important;\n        font-size: 13px;\n      }\n      .sidebar-nav-btn[data-sub-active=\"true\"]:hover {\n        background-color: #f3f4f6 !important;\n        color: #1d4ed8 !important;\n      }\n      .sidebar-nav-btn:active {\n        background-color: #e5e7eb !important;\n      }\n      .sidebar-nav-sub-group {\n        padding-left: 12px;\n        margin-left: 4px;\n        border-left: 1px dotted #e5e7eb;\n      }\n      .sidebar-nav-btn.sidebar-nav-sub {\n        padding-left: 24px;\n        font-size: 13px;\n        color: #6b7280;\n      }\n      .email-input-row {\n        -ms-overflow-style: none;\n        scrollbar-width: none;\n      }\n      .email-input-row::-webkit-scrollbar {\n        display: none;\n      }\n    </style>\n    <!-- Office JavaScript API -->\n    <" + "script type=\"text/javascript\" src=\"https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js\"><" + "/script>\n</head>\n\n<body style=\"width: 100%; height: 100%; margin: 0; padding: 0;\">\n    <div id=\"container\"></div>\n</body>\n\n</html>\n";
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (code);
 
@@ -62423,853 +62221,6 @@ module.exports = function () {
 
 /***/ }),
 
-/***/ "./src/emailService/AddUsersByEmail.tsx":
-/*!**********************************************!*\
-  !*** ./src/emailService/AddUsersByEmail.tsx ***!
-  \**********************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-/* provided dependency */ var Promise = __webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js")["Promise"];
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var api_1 = __webpack_require__(/*! ./api */ "./src/emailService/api.ts");
-var EmailInputField_1 = __importDefault(__webpack_require__(/*! ./components/EmailInputField */ "./src/emailService/components/EmailInputField.tsx"));
-var ChipsPopover_1 = __importDefault(__webpack_require__(/*! ./components/ChipsPopover */ "./src/emailService/components/ChipsPopover.tsx"));
-var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-var CHIP_WIDTH_BASE = 24;
-var CHIP_WIDTH_PER_CHAR = 7;
-var INPUT_PADDING = 20;
-var MIN_INPUT_WIDTH = 80;
-var PLUS_N_RESERVE = 40;
-function getVisibleCount(chips, containerWidth) {
-    if (containerWidth <= 0)
-        return chips.length;
-    var baseReserve = containerWidth - INPUT_PADDING - MIN_INPUT_WIDTH;
-    if (baseReserve <= 0)
-        return 0;
-    var total = 0;
-    for (var i = 0; i < chips.length; i++) {
-        var w = CHIP_WIDTH_BASE + chips[i].email.length * CHIP_WIDTH_PER_CHAR;
-        if (total + w > baseReserve) {
-            if (i === 0)
-                return 0;
-            var withPlus = baseReserve - PLUS_N_RESERVE;
-            total = 0;
-            for (var j = 0; j < chips.length; j++) {
-                var wj = CHIP_WIDTH_BASE + chips[j].email.length * CHIP_WIDTH_PER_CHAR;
-                if (total + wj > withPlus)
-                    return j;
-                total += wj;
-            }
-            return chips.length;
-        }
-        total += w;
-    }
-    return chips.length;
-}
-function generateId() {
-    return Math.random().toString(36).slice(2);
-}
-/**
- * Parent component for adding users by email.
- * - Holds email list state and passes callbacks to children (EmailInputField, chips).
- * - Children communicate back via onRemoveChip, onSelectSuggestion, onInputChange.
- * - Parent notifies page via onEmailsChange and onSubmit.
- */
-var AddUsersByEmail = function (_a) {
-    var onEmailsChange = _a.onEmailsChange, onSubmit = _a.onSubmit, className = _a.className, _b = _a.existingEmails, existingEmails = _b === void 0 ? [] : _b;
-    var _c = (0, react_1.useState)([]), chips = _c[0], setChips = _c[1];
-    var _d = (0, react_1.useState)(""), inputValue = _d[0], setInputValue = _d[1];
-    var _e = (0, react_1.useState)([]), suggestions = _e[0], setSuggestions = _e[1];
-    var _f = (0, react_1.useState)(false), showSuggestions = _f[0], setShowSuggestions = _f[1];
-    var _g = (0, react_1.useState)(false), popoverOpen = _g[0], setPopoverOpen = _g[1];
-    var _h = (0, react_1.useState)(0), containerWidth = _h[0], setContainerWidth = _h[1];
-    var containerRef = (0, react_1.useRef)(null);
-    var popoverCloseTimeoutRef = (0, react_1.useRef)(null);
-    var visibleCount = getVisibleCount(chips, containerWidth);
-    var visibleChips = chips.slice(0, visibleCount);
-    var overflowCount = chips.length - visibleCount;
-    var overflowChips = overflowCount > 0 ? chips.slice(visibleCount) : [];
-    (0, react_1.useEffect)(function () {
-        var el = containerRef.current;
-        if (!el)
-            return undefined;
-        var updateWidth = function () { return setContainerWidth(el.getBoundingClientRect().width); };
-        updateWidth();
-        var ro = new ResizeObserver(updateWidth);
-        ro.observe(el);
-        return function () { return ro.disconnect(); };
-    }, []);
-    var schedulePopoverClose = (0, react_1.useCallback)(function () {
-        if (popoverCloseTimeoutRef.current)
-            clearTimeout(popoverCloseTimeoutRef.current);
-        popoverCloseTimeoutRef.current = setTimeout(function () { return setPopoverOpen(false); }, 150);
-    }, []);
-    var cancelPopoverClose = (0, react_1.useCallback)(function () {
-        if (popoverCloseTimeoutRef.current) {
-            clearTimeout(popoverCloseTimeoutRef.current);
-            popoverCloseTimeoutRef.current = null;
-        }
-    }, []);
-    var handleOverflowMouseEnter = (0, react_1.useCallback)(function () {
-        cancelPopoverClose();
-        setPopoverOpen(true);
-    }, [cancelPopoverClose]);
-    var handleOverflowMouseLeave = (0, react_1.useCallback)(function () {
-        schedulePopoverClose();
-    }, [schedulePopoverClose]);
-    var handlePopoverMouseEnter = (0, react_1.useCallback)(function () {
-        cancelPopoverClose();
-    }, [cancelPopoverClose]);
-    var handlePopoverMouseLeave = (0, react_1.useCallback)(function () {
-        schedulePopoverClose();
-    }, [schedulePopoverClose]);
-    var emailList = chips.map(function (c) { return c.email; });
-    (0, react_1.useEffect)(function () {
-        onEmailsChange === null || onEmailsChange === void 0 ? void 0 : onEmailsChange(emailList);
-    }, [emailList.join(",")]);
-    var loadSuggestions = (0, react_1.useCallback)(function () { return __awaiter(void 0, void 0, void 0, function () {
-        var list, fromChips, fromTable, existing;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, api_1.fetchSuggestedEmails)()];
-                case 1:
-                    list = _a.sent();
-                    fromChips = chips.map(function (c) { return c.email.toLowerCase(); });
-                    fromTable = existingEmails.map(function (e) { return e.trim().toLowerCase(); });
-                    existing = fromChips.concat(fromTable);
-                    setSuggestions(list.filter(function (e) { return existing.indexOf(e.trim().toLowerCase()) === -1; }));
-                    return [2 /*return*/];
-            }
-        });
-    }); }, [chips, existingEmails]);
-    (0, react_1.useEffect)(function () {
-        if (showSuggestions)
-            loadSuggestions();
-    }, [showSuggestions, loadSuggestions]);
-    var addEmail = (0, react_1.useCallback)(function (email) {
-        var trimmed = email.trim().toLowerCase();
-        if (!trimmed)
-            return;
-        if (!EMAIL_REGEX.test(trimmed))
-            return;
-        setChips(function (prev) {
-            if (prev.some(function (c) { return c.email === trimmed; }))
-                return prev;
-            return __spreadArray(__spreadArray([], prev, true), [{ id: generateId(), email: trimmed }], false);
-        });
-        setInputValue("");
-        setSuggestions(function (s) { return s.filter(function (e) { return e !== trimmed; }); });
-        setShowSuggestions(false);
-    }, []);
-    var removeChip = (0, react_1.useCallback)(function (id) {
-        setChips(function (prev) { return prev.filter(function (c) { return c.id !== id; }); });
-    }, []);
-    var handleInputChange = (0, react_1.useCallback)(function (value) {
-        setInputValue(value);
-        if (value.includes(",") || value.includes(" ") || value.includes("\n")) {
-            value
-                .split(/[\s,\n]+/)
-                .map(function (s) { return s.trim(); })
-                .filter(Boolean)
-                .forEach(function (e) { return addEmail(e); });
-            setInputValue("");
-        }
-    }, [addEmail]);
-    var handleKeyDown = (0, react_1.useCallback)(function (e) {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            if (inputValue.trim())
-                addEmail(inputValue);
-        }
-    }, [inputValue, addEmail]);
-    var handleSubmit = (0, react_1.useCallback)(function () { return __awaiter(void 0, void 0, void 0, function () {
-        var emails, trimmed;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    emails = chips.map(function (c) { return c.email; });
-                    trimmed = inputValue.trim().toLowerCase();
-                    if (trimmed && EMAIL_REGEX.test(trimmed))
-                        emails.push(trimmed);
-                    if (emails.length === 0)
-                        return [2 /*return*/];
-                    onSubmit === null || onSubmit === void 0 ? void 0 : onSubmit(emails);
-                    return [4 /*yield*/, (0, api_1.submitAddUsersByEmail)(emails)];
-                case 1:
-                    _a.sent();
-                    setChips([]);
-                    setInputValue("");
-                    return [2 /*return*/];
-            }
-        });
-    }); }, [chips, inputValue, onSubmit]);
-    return (react_1.default.createElement("div", { className: className, style: {
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            flexWrap: "wrap",
-        } },
-        react_1.default.createElement("div", { ref: containerRef, style: { flex: 1, minWidth: "280px", position: "relative" }, onKeyDown: handleKeyDown },
-            react_1.default.createElement(EmailInputField_1.default, { chips: visibleChips, overflowCount: overflowCount, onOverflowMouseEnter: handleOverflowMouseEnter, onOverflowMouseLeave: handleOverflowMouseLeave, inputValue: inputValue, suggestions: suggestions, showSuggestions: showSuggestions, onInputChange: handleInputChange, onInputFocus: function () { return setShowSuggestions(true); }, onInputBlur: function () { return setTimeout(function () { return setShowSuggestions(false); }, 150); }, onInputClick: function () { return setShowSuggestions(true); }, onRemoveChip: removeChip, onSelectSuggestion: addEmail, placeholder: "Add emails\u2026" }),
-            popoverOpen && overflowCount > 0 && (react_1.default.createElement(ChipsPopover_1.default, { chips: overflowChips, onRemoveChip: removeChip, onMouseEnter: handlePopoverMouseEnter, onMouseLeave: handlePopoverMouseLeave }))),
-        react_1.default.createElement("button", { type: "button", onClick: handleSubmit, style: {
-                padding: "8px 20px",
-                backgroundColor: "#2563eb",
-                color: "#fff",
-                border: "none",
-                borderRadius: "8px",
-                fontSize: "14px",
-                fontWeight: 500,
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-                alignSelf: "center",
-            } },
-            "Add Users (",
-            chips.length + (inputValue.trim() ? 1 : 0),
-            ")")));
-};
-exports["default"] = AddUsersByEmail;
-
-
-/***/ }),
-
-/***/ "./src/emailService/SettingsPage.tsx":
-/*!*******************************************!*\
-  !*** ./src/emailService/SettingsPage.tsx ***!
-  \*******************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var AddUsersByEmail_1 = __importDefault(__webpack_require__(/*! ./AddUsersByEmail */ "./src/emailService/AddUsersByEmail.tsx"));
-var SidebarIcons_1 = __webpack_require__(/*! ./components/SidebarIcons */ "./src/emailService/components/SidebarIcons.tsx");
-var SIDEBAR_STYLE = {
-    width: "240px",
-    minHeight: "100vh",
-    backgroundColor: "#fff",
-    borderRight: "1px solid #e5e7eb",
-    padding: "16px 0",
-};
-var initialUsers = [
-    {
-        id: "1",
-        userName: "Brooklyn Simmons",
-        email: "email@example.long.com",
-        status: "Active",
-        addedOn: "July 10, 2023",
-        role: "Admin",
-    },
-    {
-        id: "2",
-        userName: "Jane Doe",
-        email: "jane@example.com",
-        status: "Active",
-        addedOn: "Aug 1, 2023",
-        role: "Member",
-    },
-];
-function formatAddedOn() {
-    var d = new Date();
-    var months = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" ");
-    return "".concat(months[d.getMonth()], " ").concat(d.getDate(), ", ").concat(d.getFullYear());
-}
-function generateUserId() {
-    return "u-" + Math.random().toString(36).slice(2, 11);
-}
-/**
- * Full Settings / Users page: sidebar, tabs, user table, and email input area.
- * Renders the AddUsersByEmail component and demonstrates parent ↔ child communication.
- */
-var SettingsPage = function () {
-    var _a = (0, react_1.useState)("Users"), activeTab = _a[0], setActiveTab = _a[1];
-    var _b = (0, react_1.useState)(initialUsers), users = _b[0], setUsers = _b[1];
-    var handleEmailsChange = (0, react_1.useCallback)(function (_emails) { }, []);
-    var handleSubmit = (0, react_1.useCallback)(function (emails) {
-        var addedOn = formatAddedOn();
-        var newRows = emails.map(function (email) { return ({
-            id: generateUserId(),
-            userName: email,
-            email: email,
-            status: "Active",
-            addedOn: addedOn,
-            role: "Member",
-        }); });
-        setUsers(function (prev) { return __spreadArray(__spreadArray([], prev, true), newRows, true); });
-    }, []);
-    return (react_1.default.createElement("div", { style: { display: "flex", minHeight: "100vh", backgroundColor: "#f9fafb" } },
-        react_1.default.createElement("aside", { style: SIDEBAR_STYLE },
-            react_1.default.createElement("div", { style: { padding: "0 20px 16px", fontSize: "18px", fontWeight: 600, color: "#111" } }, "chamelio"),
-            react_1.default.createElement("nav", { className: "sidebar-nav-wrap" },
-                react_1.default.createElement("button", { type: "button", className: "sidebar-nav-btn" },
-                    react_1.default.createElement(SidebarIcons_1.IconHome, null),
-                    react_1.default.createElement("span", null, "Home")),
-                react_1.default.createElement("button", { type: "button", className: "sidebar-nav-btn" },
-                    react_1.default.createElement(SidebarIcons_1.IconInvoices, null),
-                    react_1.default.createElement("span", null, "Invoices")),
-                react_1.default.createElement("button", { type: "button", className: "sidebar-nav-btn" },
-                    react_1.default.createElement(SidebarIcons_1.IconContracts, null),
-                    react_1.default.createElement("span", null, "Contracts")),
-                react_1.default.createElement("div", { className: "sidebar-nav-sub-group" },
-                    react_1.default.createElement("button", { type: "button", className: "sidebar-nav-btn sidebar-nav-sub" }, "Contracts Repository"),
-                    react_1.default.createElement("button", { type: "button", className: "sidebar-nav-btn sidebar-nav-sub" }, "Insights"),
-                    react_1.default.createElement("button", { type: "button", className: "sidebar-nav-btn sidebar-nav-sub", "data-sub-active": "true" }, "Playbooks")),
-                react_1.default.createElement("button", { type: "button", className: "sidebar-nav-btn" },
-                    react_1.default.createElement(SidebarIcons_1.IconCompliance, null),
-                    react_1.default.createElement("span", null, "Compliance")),
-                react_1.default.createElement("button", { type: "button", className: "sidebar-nav-btn" },
-                    react_1.default.createElement(SidebarIcons_1.IconLegalAgent, null),
-                    react_1.default.createElement("span", null, "Legal Agent")),
-                react_1.default.createElement("button", { type: "button", className: "sidebar-nav-btn" },
-                    react_1.default.createElement(SidebarIcons_1.IconLegalCenter, null),
-                    react_1.default.createElement("span", null, "Legal Center")),
-                react_1.default.createElement("button", { type: "button", className: "sidebar-nav-btn", "data-primary-active": "true" },
-                    react_1.default.createElement(SidebarIcons_1.IconSettings, null),
-                    react_1.default.createElement("span", null, "Settings")))),
-        react_1.default.createElement("main", { style: { flex: 1, padding: "24px" } },
-            react_1.default.createElement("div", { style: { marginBottom: "8px", fontSize: "13px", color: "#6b7280" } }, "Contracts > Playbooks > Master Service Agreement V1"),
-            react_1.default.createElement("h1", { style: { margin: "0 0 20px", fontSize: "24px", fontWeight: 600, color: "#111" } }, "Settings"),
-            react_1.default.createElement("div", { style: { display: "flex", gap: "4px", marginBottom: "24px", borderBottom: "1px solid #e5e7eb" } },
-                react_1.default.createElement("button", { type: "button", onClick: function () { return setActiveTab("Users"); }, style: {
-                        padding: "10px 16px",
-                        border: "none",
-                        borderBottom: activeTab === "Users" ? "2px solid #2563eb" : "2px solid transparent",
-                        background: "none",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        color: activeTab === "Users" ? "#2563eb" : "#6b7280",
-                        cursor: "pointer",
-                    } }, "Users"),
-                react_1.default.createElement("button", { type: "button", onClick: function () { return setActiveTab("Nav Item"); }, style: {
-                        padding: "10px 16px",
-                        border: "none",
-                        borderBottom: activeTab === "Nav Item" ? "2px solid #2563eb" : "2px solid transparent",
-                        background: "none",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        color: activeTab === "Nav Item" ? "#2563eb" : "#6b7280",
-                        cursor: "pointer",
-                    } }, "Nav Item")),
-            activeTab === "Users" && (react_1.default.createElement(react_1.default.Fragment, null,
-                react_1.default.createElement("div", { style: {
-                        backgroundColor: "#fff",
-                        border: "1px solid #e5e7eb",
-                        borderRadius: "8px",
-                        marginBottom: "24px",
-                        maxHeight: "340px",
-                        overflowY: "auto",
-                        overflowX: "hidden",
-                    } },
-                    react_1.default.createElement("table", { style: { width: "100%", borderCollapse: "collapse", fontSize: "14px" } },
-                        react_1.default.createElement("thead", { style: { position: "sticky", top: 0, zIndex: 1, backgroundColor: "#f9fafb", boxShadow: "0 1px 0 0 #e5e7eb" } },
-                            react_1.default.createElement("tr", { style: { backgroundColor: "#f9fafb", borderBottom: "1px solid #e5e7eb" } },
-                                react_1.default.createElement("th", { style: { padding: "12px 16px", textAlign: "left", fontWeight: 500, color: "#374151" } }, "User Name"),
-                                react_1.default.createElement("th", { style: { padding: "12px 16px", textAlign: "left", fontWeight: 500, color: "#374151" } }, "Email"),
-                                react_1.default.createElement("th", { style: { padding: "12px 16px", textAlign: "left", fontWeight: 500, color: "#374151" } }, "Status"),
-                                react_1.default.createElement("th", { style: { padding: "12px 16px", textAlign: "left", fontWeight: 500, color: "#374151" } }, "Added On"),
-                                react_1.default.createElement("th", { style: { padding: "12px 16px", textAlign: "left", fontWeight: 500, color: "#374151" } }, "Role"),
-                                react_1.default.createElement("th", { style: { padding: "12px 16px", width: 48 } }))),
-                        react_1.default.createElement("tbody", null, users.map(function (row) { return (react_1.default.createElement("tr", { key: row.id, style: { borderBottom: "1px solid #e5e7eb" } },
-                            react_1.default.createElement("td", { style: { padding: "12px 16px", color: "#111" } }, row.userName),
-                            react_1.default.createElement("td", { style: { padding: "12px 16px", color: "#6b7280" } }, row.email),
-                            react_1.default.createElement("td", { style: { padding: "12px 16px" } },
-                                react_1.default.createElement("span", { style: {
-                                        padding: "4px 10px",
-                                        borderRadius: "4px",
-                                        backgroundColor: row.status === "Active" ? "#d1fae5" : "#e5e7eb",
-                                        color: row.status === "Active" ? "#065f46" : "#6b7280",
-                                        fontSize: "12px",
-                                        fontWeight: 500,
-                                    } }, row.status)),
-                            react_1.default.createElement("td", { style: { padding: "12px 16px", color: "#6b7280" } }, row.addedOn),
-                            react_1.default.createElement("td", { style: { padding: "12px 16px" } },
-                                react_1.default.createElement("select", { defaultValue: row.role, style: {
-                                        padding: "4px 8px",
-                                        border: "1px solid #d1d5db",
-                                        borderRadius: "4px",
-                                        fontSize: "13px",
-                                    } },
-                                    react_1.default.createElement("option", { value: "Admin" }, "Admin"),
-                                    react_1.default.createElement("option", { value: "Member" }, "Member"),
-                                    react_1.default.createElement("option", { value: "Viewer" }, "Viewer"))),
-                            react_1.default.createElement("td", { style: { padding: "12px 16px" } },
-                                react_1.default.createElement("button", { type: "button", "aria-label": "Delete ".concat(row.userName), onClick: function () { return setUsers(function (prev) { return prev.filter(function (u) { return u.id !== row.id; }); }); }, style: {
-                                        padding: 6,
-                                        border: "none",
-                                        background: "none",
-                                        cursor: "pointer",
-                                        color: "#6b7280",
-                                        borderRadius: "6px",
-                                    }, onMouseEnter: function (e) {
-                                        e.currentTarget.style.backgroundColor = "#f3f4f6";
-                                        e.currentTarget.style.color = "#374151";
-                                    }, onMouseLeave: function (e) {
-                                        e.currentTarget.style.backgroundColor = "transparent";
-                                        e.currentTarget.style.color = "#6b7280";
-                                    } },
-                                    react_1.default.createElement("svg", { width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", style: { display: "block" } },
-                                        react_1.default.createElement("polyline", { points: "3 6 5 6 21 6" }),
-                                        react_1.default.createElement("path", { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" }),
-                                        react_1.default.createElement("line", { x1: "10", y1: "11", x2: "10", y2: "17" }),
-                                        react_1.default.createElement("line", { x1: "14", y1: "11", x2: "14", y2: "17" })))))); })))),
-                react_1.default.createElement("div", { style: { backgroundColor: "#fff", padding: "16px", border: "1px solid #e5e7eb", borderRadius: "8px" } },
-                    react_1.default.createElement(AddUsersByEmail_1.default, { existingEmails: users.map(function (u) { return u.email; }), onEmailsChange: handleEmailsChange, onSubmit: handleSubmit })))),
-            activeTab === "Nav Item" && (react_1.default.createElement("div", { style: { padding: "24px", color: "#6b7280" } }, "Nav Item content (placeholder)")))));
-};
-exports["default"] = SettingsPage;
-
-
-/***/ }),
-
-/***/ "./src/emailService/components/ChipsPopover.tsx":
-/*!******************************************************!*\
-  !*** ./src/emailService/components/ChipsPopover.tsx ***!
-  \******************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var EmailChip_1 = __importDefault(__webpack_require__(/*! ./EmailChip */ "./src/emailService/components/EmailChip.tsx"));
-/**
- * Figma-style popover: panel above the input with vertical list of email pills.
- * Shown on hover over the "+N" element; stays open while hovering popover.
- */
-var ChipsPopover = function (_a) {
-    var chips = _a.chips, onRemoveChip = _a.onRemoveChip, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave;
-    return (react_1.default.createElement("div", { role: "dialog", "aria-label": "Selected emails", onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave, style: {
-            position: "absolute",
-            right: 0,
-            bottom: "100%",
-            marginBottom: "6px",
-            width: "380px",
-            maxWidth: "calc(100vw - 32px)",
-            backgroundColor: "#fff",
-            border: "1px solid #e5e7eb",
-            borderRadius: "10px",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
-            maxHeight: "260px",
-            overflowY: "auto",
-            zIndex: 20,
-            padding: "12px 16px",
-        } },
-        react_1.default.createElement("div", { style: {
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "8px 10px",
-                alignContent: "flex-start",
-            } }, chips.map(function (chip) { return (react_1.default.createElement(EmailChip_1.default, { key: chip.id, email: chip.email, onRemove: function () { return onRemoveChip(chip.id); }, variant: "primary" })); }))));
-};
-exports["default"] = ChipsPopover;
-
-
-/***/ }),
-
-/***/ "./src/emailService/components/EmailChip.tsx":
-/*!***************************************************!*\
-  !*** ./src/emailService/components/EmailChip.tsx ***!
-  \***************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-/**
- * Single email chip with remove (x) action. Child notifies parent via onRemove.
- */
-var EmailChip = function (_a) {
-    var email = _a.email, onRemove = _a.onRemove, _b = _a.variant, variant = _b === void 0 ? "default" : _b, _c = _a.noMarginBottom, noMarginBottom = _c === void 0 ? false : _c;
-    var isPrimary = variant === "primary";
-    return (react_1.default.createElement("span", { style: {
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "6px",
-            padding: "6px 12px",
-            borderRadius: "6px",
-            backgroundColor: "#dfe8f7",
-            color: isPrimary ? "#344054" : "#1f2937",
-            fontSize: "14px",
-            fontWeight: isPrimary ? 500 : 400,
-            marginRight: "6px",
-            marginBottom: noMarginBottom ? 0 : "6px",
-            flexShrink: 0,
-        } },
-        email,
-        react_1.default.createElement("button", { type: "button", onClick: onRemove, "aria-label": "Remove ".concat(email), style: {
-                marginLeft: "2px",
-                padding: 0,
-                border: "none",
-                background: "none",
-                cursor: "pointer",
-                color: isPrimary ? "#344054" : "#6b7280",
-                fontSize: "16px",
-                lineHeight: 1,
-            } }, "\u00D7")));
-};
-exports["default"] = EmailChip;
-
-
-/***/ }),
-
-/***/ "./src/emailService/components/EmailInputField.tsx":
-/*!*********************************************************!*\
-  !*** ./src/emailService/components/EmailInputField.tsx ***!
-  \*********************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var EmailChip_1 = __importDefault(__webpack_require__(/*! ./EmailChip */ "./src/emailService/components/EmailChip.tsx"));
-var EmailSuggestionDropdown_1 = __importDefault(__webpack_require__(/*! ./EmailSuggestionDropdown */ "./src/emailService/components/EmailSuggestionDropdown.tsx"));
-/**
- * Input area that displays email chips and an optional suggestion dropdown.
- * Communicates with parent via callbacks (onInputChange, onRemoveChip, onSelectSuggestion).
- */
-var EmailInputField = function (_a) {
-    var chips = _a.chips, _b = _a.overflowCount, overflowCount = _b === void 0 ? 0 : _b, onOverflowMouseEnter = _a.onOverflowMouseEnter, onOverflowMouseLeave = _a.onOverflowMouseLeave, inputValue = _a.inputValue, suggestions = _a.suggestions, showSuggestions = _a.showSuggestions, onInputChange = _a.onInputChange, onInputFocus = _a.onInputFocus, onInputBlur = _a.onInputBlur, onInputClick = _a.onInputClick, onRemoveChip = _a.onRemoveChip, onSelectSuggestion = _a.onSelectSuggestion, _c = _a.placeholder, placeholder = _c === void 0 ? "Add emails…" : _c;
-    return (react_1.default.createElement("div", { style: { position: "relative", flex: 1, minWidth: 0 } },
-        react_1.default.createElement("div", { role: "presentation", className: "email-input-row", onClick: onInputClick, style: {
-                display: "flex",
-                flexWrap: "nowrap",
-                alignItems: "center",
-                minHeight: "40px",
-                padding: "6px 12px",
-                border: "1px solid #d1d5db",
-                borderRadius: "8px",
-                backgroundColor: "#fff",
-                overflowX: "auto",
-                overflowY: "hidden",
-            } },
-            chips.map(function (chip) { return (react_1.default.createElement(EmailChip_1.default, { key: chip.id, email: chip.email, onRemove: function () { return onRemoveChip(chip.id); }, noMarginBottom: true })); }),
-            overflowCount > 0 && (react_1.default.createElement("span", { role: "button", tabIndex: 0, onMouseEnter: onOverflowMouseEnter, onMouseLeave: onOverflowMouseLeave, style: {
-                    display: "inline-flex",
-                    alignItems: "center",
-                    flexShrink: 0,
-                    padding: "6px 12px",
-                    marginRight: "6px",
-                    marginBottom: 0,
-                    borderRadius: "6px",
-                    backgroundColor: "#dfe8f7",
-                    color: "#344054",
-                    fontSize: "14px",
-                    fontWeight: 500,
-                    cursor: "pointer",
-                    border: "none",
-                } },
-                "+",
-                overflowCount)),
-            react_1.default.createElement("input", { type: "text", value: inputValue, onChange: function (e) { return onInputChange(e.target.value); }, onFocus: onInputFocus, onBlur: onInputBlur, onClick: onInputClick, placeholder: chips.length === 0 && overflowCount === 0 ? placeholder : "", style: {
-                    flex: 1,
-                    minWidth: "120px",
-                    border: "none",
-                    outline: "none",
-                    fontSize: "14px",
-                    padding: "4px 0",
-                } })),
-        react_1.default.createElement(EmailSuggestionDropdown_1.default, { suggestions: suggestions, onSelect: onSelectSuggestion, visible: showSuggestions })));
-};
-exports["default"] = EmailInputField;
-
-
-/***/ }),
-
-/***/ "./src/emailService/components/EmailSuggestionDropdown.tsx":
-/*!*****************************************************************!*\
-  !*** ./src/emailService/components/EmailSuggestionDropdown.tsx ***!
-  \*****************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-/**
- * Dropdown showing email suggestions. Child notifies parent via onSelect.
- */
-var EmailSuggestionDropdown = function (_a) {
-    var suggestions = _a.suggestions, onSelect = _a.onSelect, visible = _a.visible, _b = _a.style, style = _b === void 0 ? {} : _b;
-    if (!visible || suggestions.length === 0)
-        return null;
-    return (react_1.default.createElement("div", { role: "listbox", style: __assign({ position: "absolute", top: "100%", left: 0, right: 0, marginTop: "4px", backgroundColor: "#fff", border: "1px solid #e5e7eb", borderRadius: "8px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", maxHeight: "200px", overflowY: "auto", zIndex: 10 }, style) }, suggestions.map(function (email) { return (react_1.default.createElement("button", { key: email, type: "button", role: "option", onMouseDown: function (e) {
-            e.preventDefault();
-            onSelect(email);
-        }, style: {
-            display: "block",
-            width: "100%",
-            padding: "8px 12px",
-            border: "none",
-            background: "none",
-            textAlign: "left",
-            cursor: "pointer",
-            fontSize: "14px",
-            color: "#374151",
-        }, onMouseEnter: function (e) {
-            e.currentTarget.style.backgroundColor = "#f3f4f6";
-        }, onMouseLeave: function (e) {
-            e.currentTarget.style.backgroundColor = "transparent";
-        } }, email)); })));
-};
-exports["default"] = EmailSuggestionDropdown;
-
-
-/***/ }),
-
-/***/ "./src/emailService/components/SidebarIcons.tsx":
-/*!******************************************************!*\
-  !*** ./src/emailService/components/SidebarIcons.tsx ***!
-  \******************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.IconSettings = exports.IconLegalCenter = exports.IconLegalAgent = exports.IconCompliance = exports.IconContracts = exports.IconInvoices = exports.IconHome = void 0;
-var react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var iconSize = 20;
-var iconStyle = { width: iconSize, height: iconSize, flexShrink: 0 };
-var IconHome = function () { return (react_1.default.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", style: iconStyle },
-    react_1.default.createElement("rect", { x: "3", y: "3", width: "7", height: "7", rx: "1" }),
-    react_1.default.createElement("rect", { x: "14", y: "3", width: "7", height: "7", rx: "1" }),
-    react_1.default.createElement("rect", { x: "3", y: "14", width: "7", height: "7", rx: "1" }),
-    react_1.default.createElement("rect", { x: "14", y: "14", width: "7", height: "7", rx: "1" }))); };
-exports.IconHome = IconHome;
-var IconInvoices = function () { return (react_1.default.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", style: iconStyle },
-    react_1.default.createElement("path", { d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" }),
-    react_1.default.createElement("path", { d: "M14 2v6h6" }),
-    react_1.default.createElement("path", { d: "M12 18v-6" }),
-    react_1.default.createElement("path", { d: "M9 15h6" }))); };
-exports.IconInvoices = IconInvoices;
-var IconContracts = function () { return (react_1.default.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", style: iconStyle },
-    react_1.default.createElement("path", { d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" }),
-    react_1.default.createElement("path", { d: "M14 2v6h6" }),
-    react_1.default.createElement("path", { d: "M16 13H8" }),
-    react_1.default.createElement("path", { d: "M16 17H8" }),
-    react_1.default.createElement("path", { d: "M10 9H8" }))); };
-exports.IconContracts = IconContracts;
-var IconCompliance = function () { return (react_1.default.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", style: iconStyle },
-    react_1.default.createElement("circle", { cx: "11", cy: "11", r: "8" }),
-    react_1.default.createElement("path", { d: "m21 21-4.35-4.35" }),
-    react_1.default.createElement("path", { d: "m9 11 2 2 4-4" }))); };
-exports.IconCompliance = IconCompliance;
-var IconLegalAgent = function () { return (react_1.default.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", style: iconStyle },
-    react_1.default.createElement("path", { d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" }),
-    react_1.default.createElement("circle", { cx: "12", cy: "7", r: "4" }))); };
-exports.IconLegalAgent = IconLegalAgent;
-var IconLegalCenter = function () { return (react_1.default.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", style: iconStyle },
-    react_1.default.createElement("path", { d: "M3 21h18" }),
-    react_1.default.createElement("path", { d: "M5 21V7l8-4 8 4v14" }),
-    react_1.default.createElement("path", { d: "M9 21v-4h6v4" }),
-    react_1.default.createElement("path", { d: "M9 17h6" }))); };
-exports.IconLegalCenter = IconLegalCenter;
-var IconSettings = function () { return (react_1.default.createElement("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", style: iconStyle },
-    react_1.default.createElement("circle", { cx: "12", cy: "12", r: "3" }),
-    react_1.default.createElement("path", { d: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" }))); };
-exports.IconSettings = IconSettings;
-
-
-/***/ }),
-
-/***/ "./src/taskpane/components/App.tsx":
-/*!*****************************************!*\
-  !*** ./src/taskpane/components/App.tsx ***!
-  \*****************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-/// <reference path="../../chakra-ui-react.d.ts" />
-var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-var react_2 = __webpack_require__(/*! @chakra-ui/react */ "./node_modules/@chakra-ui/react/dist/cjs/index.cjs");
-var emailService_1 = __webpack_require__(/*! ../../emailService */ "./src/emailService/index.ts");
-var SearchPage_1 = __importDefault(__webpack_require__(/*! ./SearchPage */ "./src/taskpane/components/SearchPage.tsx"));
-/**
- * Root app: tabs for Task 1 (Users) and Task 2 (Search).
- */
-var App = function () {
-    var _a = (0, react_1.useState)(0), tabIndex = _a[0], setTabIndex = _a[1];
-    return (react_1.default.createElement(react_2.Box, { minH: "100vh", bg: "gray.50" },
-        react_1.default.createElement(react_2.Tabs, { index: tabIndex, onChange: setTabIndex, variant: "enclosed", colorScheme: "blue" },
-            react_1.default.createElement(react_2.TabList, null,
-                react_1.default.createElement(react_2.Tab, null, "Users"),
-                react_1.default.createElement(react_2.Tab, null, "Search")),
-            react_1.default.createElement(react_2.TabPanels, null,
-                react_1.default.createElement(react_2.TabPanel, { px: 0 },
-                    react_1.default.createElement(emailService_1.SettingsPage, null)),
-                react_1.default.createElement(react_2.TabPanel, { px: 0 },
-                    react_1.default.createElement(SearchPage_1.default, null))))));
-};
-exports["default"] = App;
-
-
-/***/ }),
-
 /***/ "./src/taskpane/components/SearchPage.tsx":
 /*!************************************************!*\
   !*** ./src/taskpane/components/SearchPage.tsx ***!
@@ -63354,9 +62305,54 @@ var SearchPage = function () {
     var _b = (0, react_1.useState)(false), caseSensitive = _b[0], setCaseSensitive = _b[1];
     var _c = (0, react_1.useState)([]), results = _c[0], setResults = _c[1];
     var _d = (0, react_1.useState)(false), loading = _d[0], setLoading = _d[1];
+    var _e = (0, react_1.useState)(false), inserting = _e[0], setInserting = _e[1];
     var toast = (0, react_2.useToast)();
+    var handleInsertSample = (0, react_1.useCallback)(function () { return __awaiter(void 0, void 0, void 0, function () {
+        var err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!(0, wordSearch_1.isWordAvailable)()) {
+                        toast({
+                            title: "Open in Word",
+                            description: "Insert sample text only works when the add-in is running inside Word.",
+                            status: "info",
+                            duration: 4000,
+                        });
+                        return [2 /*return*/];
+                    }
+                    setInserting(true);
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, 4, 5]);
+                    return [4 /*yield*/, (0, wordSearch_1.insertSampleContent)()];
+                case 2:
+                    _a.sent();
+                    toast({
+                        title: "Sample text inserted",
+                        description: "Search for \"document\", \"search\", \"sample\", or \"Word\" to test.",
+                        status: "success",
+                        duration: 4000,
+                    });
+                    return [3 /*break*/, 5];
+                case 3:
+                    err_1 = _a.sent();
+                    toast({
+                        title: "Insert failed",
+                        description: err_1 instanceof Error ? err_1.message : "Unknown error",
+                        status: "error",
+                        duration: 4000,
+                    });
+                    return [3 /*break*/, 5];
+                case 4:
+                    setInserting(false);
+                    return [7 /*endfinally*/];
+                case 5: return [2 /*return*/];
+            }
+        });
+    }); }, [toast]);
     var handleSearch = (0, react_1.useCallback)(function () { return __awaiter(void 0, void 0, void 0, function () {
-        var top3, err_1;
+        var top3, err_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -63388,10 +62384,10 @@ var SearchPage = function () {
                     }
                     return [3 /*break*/, 5];
                 case 3:
-                    err_1 = _a.sent();
+                    err_2 = _a.sent();
                     toast({
                         title: "Search failed",
-                        description: err_1 instanceof Error ? err_1.message : "Unknown error",
+                        description: err_2 instanceof Error ? err_2.message : "Unknown error",
                         status: "error",
                         duration: 4000,
                     });
@@ -63408,6 +62404,7 @@ var SearchPage = function () {
         react_1.default.createElement(react_2.VStack, { align: "stretch", spacing: 4 },
             react_1.default.createElement(react_2.Heading, { size: "md" }, "Document Search"),
             react_1.default.createElement(react_2.Text, { fontSize: "sm", color: "gray.600" }, "Search the current Word document. Top 3 results are shown below."),
+            react_1.default.createElement(react_2.Button, { size: "sm", variant: "outline", colorScheme: "gray", onClick: handleInsertSample, isLoading: inserting, loadingText: "Inserting...", isDisabled: !wordAvailable }, "Insert sample text to test search"),
             react_1.default.createElement(react_2.Input, { placeholder: "Enter search query", value: query, onChange: function (e) { return setQuery(e.target.value); }, onKeyDown: function (e) { return e.key === "Enter" && handleSearch(); }, size: "md" }),
             react_1.default.createElement(react_2.Checkbox, { isChecked: caseSensitive, onChange: function (e) { return setCaseSensitive(e.target.checked); } }, "Case sensitive"),
             react_1.default.createElement(react_2.Button, { colorScheme: "blue", onClick: handleSearch, isLoading: loading, loadingText: "Searching..." }, "Search"),
@@ -63461,7 +62458,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var client_1 = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 var react_1 = __webpack_require__(/*! @chakra-ui/react */ "./node_modules/@chakra-ui/react/dist/cjs/index.cjs");
-var App_1 = __importDefault(__webpack_require__(/*! ./components/App */ "./src/taskpane/components/App.tsx"));
+var SearchPage_1 = __importDefault(__webpack_require__(/*! ./components/SearchPage */ "./src/taskpane/components/SearchPage.tsx"));
 /* global document, Office, HTMLElement */
 var rootElement = document.getElementById("container");
 var root = rootElement ? (0, client_1.createRoot)(rootElement) : undefined;
@@ -63471,7 +62468,7 @@ function renderApp() {
         return;
     rendered = true;
     root.render(React.createElement(react_1.ChakraProvider, null,
-        React.createElement(App_1.default, null)));
+        React.createElement(SearchPage_1.default, null)));
 }
 /* Render when running inside Office */
 if (typeof Office !== "undefined" && Office.onReady) {

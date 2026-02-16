@@ -10,7 +10,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { searchWordDocument, isWordAvailable } from "../wordSearch";
+import { searchWordDocument, isWordAvailable, insertSampleContent } from "../wordSearch";
 
 /**
  * Task 2: Word search interface.
@@ -23,7 +23,39 @@ const SearchPage: React.FC = () => {
   const [caseSensitive, setCaseSensitive] = useState(false);
   const [results, setResults] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [inserting, setInserting] = useState(false);
   const toast = useToast();
+
+  const handleInsertSample = useCallback(async () => {
+    if (!isWordAvailable()) {
+      toast({
+        title: "Open in Word",
+        description: "Insert sample text only works when the add-in is running inside Word.",
+        status: "info",
+        duration: 4000,
+      });
+      return;
+    }
+    setInserting(true);
+    try {
+      await insertSampleContent();
+      toast({
+        title: "Sample text inserted",
+        description: "Search for \"document\", \"search\", \"sample\", or \"Word\" to test.",
+        status: "success",
+        duration: 4000,
+      });
+    } catch (err) {
+      toast({
+        title: "Insert failed",
+        description: err instanceof Error ? err.message : "Unknown error",
+        status: "error",
+        duration: 4000,
+      });
+    } finally {
+      setInserting(false);
+    }
+  }, [toast]);
 
   const handleSearch = useCallback(async () => {
     if (!query.trim()) {
@@ -69,6 +101,18 @@ const SearchPage: React.FC = () => {
         <Text fontSize="sm" color="gray.600">
           Search the current Word document. Top 3 results are shown below.
         </Text>
+
+        <Button
+          size="sm"
+          variant="outline"
+          colorScheme="gray"
+          onClick={handleInsertSample}
+          isLoading={inserting}
+          loadingText="Inserting..."
+          isDisabled={!wordAvailable}
+        >
+          Insert sample text to test search
+        </Button>
 
         <Input
           placeholder="Enter search query"

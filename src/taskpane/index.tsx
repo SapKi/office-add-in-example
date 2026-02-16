@@ -2,7 +2,7 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { ChakraProvider } from "@chakra-ui/react";
-import App from "./components/App";
+import SearchPage from "./components/SearchPage";
 
 /* global document, Office, HTMLElement */
 
@@ -15,7 +15,7 @@ function renderApp(): void {
   rendered = true;
   root.render(
     <ChakraProvider>
-      <App />
+      <SearchPage />
     </ChakraProvider>
   );
 }
