@@ -60,7 +60,7 @@ export function isWordAvailable(): boolean {
 /**
  * Inserts sample paragraphs into the document so you can test search.
  * Call this when the add-in is running inside Word, then search for:
- * "document", "search", "sample", or "Word" to see results.
+ * "Employee", "Employer", "Contract", or "termination" to see results.
  */
 export function insertSampleContent(): Promise<void> {
   if (typeof Word === "undefined") {
@@ -68,9 +68,9 @@ export function insertSampleContent(): Promise<void> {
   }
 
   const sampleParagraphs = [
-    "This is sample content for testing the document search. You can search for the word document or search.",
-    "The Word add-in search feature finds text in your document. Try searching for \"sample\" or \"Word\" to see the top 3 results.",
-    "Each search result shows a snippet of text from the document. Case sensitive search matches exact capitalization.",
+    "EMPLOYMENT AGREEMENT – This Contract of Hiring is entered into as of the Effective Date between the Employer and the Employee. The Employee agrees to perform the duties set forth herein.",
+    "COMPENSATION: The Employer shall pay the Employee a base salary as set forth in Schedule A. Payment shall be made bi-weekly. The Employee shall be eligible for benefits in accordance with company policy.",
+    "TERM AND TERMINATION: This agreement shall remain in effect until terminated. Either party may terminate this Contract with thirty (30) days written notice. The Employee shall return all company property upon termination. Hire me",
   ];
 
   return new Promise((resolve, reject) => {
