@@ -16,6 +16,8 @@ import {
   isWordAvailable,
   insertSampleContent,
   selectAndHighlightResult,
+  clearAllHighlights,
+  highlightAllSearchMatches,
   type SearchResultItem,
 } from "../wordSearch";
 
@@ -127,10 +129,13 @@ const SearchPage: React.FC = () => {
     setMounted(true);
   }, []);
 
-  // Search as you type (debounced)
+  // Search as you type (debounced). Clear all highlights in the document on each search.
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
+      if (isWordAvailable()) {
+        clearAllHighlights().catch(() => {});
+      }
       return () => {};
     }
     if (!isWordAvailable()) {
@@ -139,7 +144,13 @@ const SearchPage: React.FC = () => {
     }
     const timer = setTimeout(() => {
       setLoading(true);
-      searchWordDocument(query, { matchCase: caseSensitive })
+      clearAllHighlights()
+        .then(() =>
+          searchWordDocument(query, {
+            matchCase: caseSensitive,
+            matchWholeWordFirst: true,
+          })
+        )
         .then((items) => {
           setResults(items);
         })
@@ -210,12 +221,26 @@ const SearchPage: React.FC = () => {
       return;
     }
     setLoading(true);
-    setResults([]);
     try {
-      const items = await searchWordDocument(query, { matchCase: caseSensitive });
+      await clearAllHighlights();
+      const count = await highlightAllSearchMatches(query, {
+        matchCase: caseSensitive,
+        matchWholeWordFirst: true,
+      });
+      const items = await searchWordDocument(query, {
+        matchCase: caseSensitive,
+        matchWholeWordFirst: true,
+      });
       setResults(items);
-      if (items.length === 0) {
+      if (count === 0) {
         toast({ title: "No matches found", status: "info", duration: 2000 });
+      } else {
+        toast({
+          title: "Matches highlighted",
+          description: `${count} match${count === 1 ? "" : "es"} highlighted in the document.`,
+          status: "success",
+          duration: 3000,
+        });
       }
     } catch (err) {
       toast({
@@ -286,7 +311,7 @@ const SearchPage: React.FC = () => {
             opacity: mounted ? 1 : 0,
           }}
         >
-          Search the document; top 3 results appear in a list under the search box. Click a result to highlight it in the document.
+          Perform search in the document; Top 3 results appear when typing. Click a result to highlight it in the document.
         </Text>
 
         <Box

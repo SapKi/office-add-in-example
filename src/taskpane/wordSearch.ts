@@ -7,6 +7,8 @@
 
 export interface WordSearchOptions {
   matchCase: boolean;
+  /** If true, prefer full-word matches; only use partial match when no full-word matches exist. */
+  matchWholeWordFirst?: boolean;
 }
 
 export interface SearchResultItem {
@@ -18,6 +20,7 @@ export interface SearchResultItem {
 
 /**
  * Searches the Word document and returns the top 3 matches with paragraph context.
+ * When matchWholeWordFirst is true (default): tries full-word match first; if no results, falls back to partial (contain) match.
  * Only works when the add-in is running inside Word.
  */
 export async function searchWordDocument(
@@ -31,14 +34,33 @@ export async function searchWordDocument(
   const trimmed = query.trim();
   if (!trimmed) return [];
 
+  const preferWholeWord = options.matchWholeWordFirst !== false;
+
   return new Promise((resolve, reject) => {
     Word.run(function (context) {
-      const searchResults = context.document.body.search(trimmed, {
-        matchCase: options.matchCase,
-      });
-      searchResults.load("items");
-      return context.sync().then(function () {
-        const items = searchResults.items;
+      const body = context.document.body;
+      const optsWhole = { matchCase: options.matchCase, matchWholeWord: true };
+      const optsPartial = { matchCase: options.matchCase, matchWholeWord: false };
+
+      function runSearch(searchOpts: { matchCase: boolean; matchWholeWord: boolean }) {
+        const searchResults = body.search(trimmed, searchOpts);
+        searchResults.load("items");
+        return context.sync().then(function () {
+          return searchResults.items;
+        });
+      }
+
+      const firstSearch = preferWholeWord ? runSearch(optsWhole) : runSearch(optsPartial);
+
+      return firstSearch.then(function (items: Word.Range[]) {
+        const useItems = items.length > 0 ? items : null;
+        if (useItems === null && preferWholeWord) {
+          return runSearch(optsPartial).then(function (partialItems: Word.Range[]) {
+            return partialItems;
+          });
+        }
+        return Promise.resolve(useItems || []);
+      }).then(function (items: Word.Range[]) {
         const top3 = items.slice(0, 3);
         const paragraphs: { text?: string }[] = [];
         top3.forEach(function (range) {
@@ -66,7 +88,7 @@ export async function searchWordDocument(
 
 /**
  * Selects and highlights the Nth search result (0-based index) in the document.
- * Call after searchWordDocument; uses the same query and options to find the same match.
+ * Uses the same whole-word-first then partial logic as searchWordDocument so the Nth result matches.
  */
 export function selectAndHighlightResult(
   query: string,
@@ -80,14 +102,31 @@ export function selectAndHighlightResult(
   const trimmed = query.trim();
   if (!trimmed) return Promise.reject(new Error("Query is empty."));
 
+  const preferWholeWord = options.matchWholeWordFirst !== false;
+
   return new Promise((resolve, reject) => {
     Word.run(function (context) {
-      const searchResults = context.document.body.search(trimmed, {
-        matchCase: options.matchCase,
-      });
-      searchResults.load("items");
-      return context.sync().then(function () {
-        const items = searchResults.items;
+      const body = context.document.body;
+      const optsWhole = { matchCase: options.matchCase, matchWholeWord: true };
+      const optsPartial = { matchCase: options.matchCase, matchWholeWord: false };
+
+      function runSearch(searchOpts: { matchCase: boolean; matchWholeWord: boolean }) {
+        const searchResults = body.search(trimmed, searchOpts);
+        searchResults.load("items");
+        return context.sync().then(function () {
+          return searchResults.items;
+        });
+      }
+
+      const firstSearch = preferWholeWord ? runSearch(optsWhole) : runSearch(optsPartial);
+
+      return firstSearch.then(function (items: Word.Range[]) {
+        const useItems = items.length > 0 ? items : null;
+        if (useItems === null && preferWholeWord) {
+          return runSearch(optsPartial);
+        }
+        return Promise.resolve(useItems || []);
+      }).then(function (items: Word.Range[]) {
         if (resultIndex < 0 || resultIndex >= items.length) {
           reject(new Error("Invalid result index."));
           return context.sync();
@@ -105,6 +144,84 @@ export function selectAndHighlightResult(
         console.error("Word select/highlight error:", err);
         reject(err);
       });
+  });
+}
+
+/**
+ * Removes all highlight (yellow mark) from the document body.
+ */
+export function clearAllHighlights(): Promise<void> {
+  if (typeof Word === "undefined") {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve, reject) => {
+    Word.run(function (context) {
+      const bodyRange = context.document.body.getRange("Whole");
+      bodyRange.font.highlightColor = null;
+      return context.sync();
+    })
+      .then(function () {
+        resolve();
+      })
+      .catch(function (err) {
+        console.error("Clear highlights error:", err);
+        reject(err);
+      });
+  });
+}
+
+/**
+ * Finds all matches (full-word first, then partial if none) and highlights every one in the document.
+ * Returns the number of ranges highlighted.
+ */
+export function highlightAllSearchMatches(
+  query: string,
+  options: WordSearchOptions
+): Promise<number> {
+  if (typeof Word === "undefined") {
+    return Promise.reject(new Error("Word API not available. Open the add-in inside Word."));
+  }
+
+  const trimmed = query.trim();
+  if (!trimmed) return Promise.resolve(0);
+
+  const preferWholeWord = options.matchWholeWordFirst !== false;
+
+  return new Promise((resolve, reject) => {
+    Word.run(function (context) {
+      const body = context.document.body;
+      const optsWhole = { matchCase: options.matchCase, matchWholeWord: true };
+      const optsPartial = { matchCase: options.matchCase, matchWholeWord: false };
+
+      function runSearch(searchOpts: { matchCase: boolean; matchWholeWord: boolean }) {
+        const searchResults = body.search(trimmed, searchOpts);
+        searchResults.load("items");
+        return context.sync().then(function () {
+          return searchResults.items;
+        });
+      }
+
+      const firstSearch = preferWholeWord ? runSearch(optsWhole) : runSearch(optsPartial);
+
+      return firstSearch.then(function (items: Word.Range[]) {
+        const useItems = items.length > 0 ? items : null;
+        if (useItems === null && preferWholeWord) {
+          return runSearch(optsPartial);
+        }
+        return Promise.resolve(useItems || []);
+      }).then(function (items: Word.Range[]) {
+        items.forEach(function (range) {
+          range.font.highlightColor = "#FFFF00";
+        });
+        return context.sync().then(function () {
+          resolve(items.length);
+        });
+      });
+    }).catch(function (err) {
+      console.error("Word highlight all error:", err);
+      reject(err);
+    });
   });
 }
 
