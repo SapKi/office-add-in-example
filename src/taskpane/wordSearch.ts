@@ -116,9 +116,9 @@ export function isWordAvailable(): boolean {
 }
 
 /**
- * Inserts sample paragraphs into the document so you can test search.
- * Call this when the add-in is running inside Word, then search for:
- * "Employee", "Employer", "Contract", or "termination" to see results.
+ * Inserts long, varied sample paragraphs into the document so you can test search.
+ * Try searching for: Employee, Employer, Contract, termination, salary, benefits,
+ * confidentiality, notice, duties, compensation, schedule, policy, property, etc.
  */
 export function insertSampleContent(): Promise<void> {
   if (typeof Word === "undefined") {
@@ -126,9 +126,21 @@ export function insertSampleContent(): Promise<void> {
   }
 
   const sampleParagraphs = [
-    "EMPLOYMENT AGREEMENT – This Contract of Hiring is entered into as of the Effective Date between the Employer and the Employee. The Employee agrees to perform the duties set forth herein.",
-    "COMPENSATION: The Employer shall pay the Employee a base salary as set forth in Schedule A. Payment shall be made bi-weekly. The Employee shall be eligible for benefits in accordance with company policy.",
-    "TERM AND TERMINATION: This agreement shall remain in effect until terminated. Either party may terminate this Contract with thirty (30) days written notice. The Employee shall return all company property upon termination. Hire me",
+    "EMPLOYMENT AGREEMENT – This Contract of Hiring is entered into as of the Effective Date between the Employer and the Employee. The Employee agrees to perform the duties set forth herein and to devote full time and best efforts to the business of the Employer.",
+    "DEFINITIONS: For the purposes of this agreement, the term \"Employer\" means the company and its affiliates. The term \"Employee\" refers to the individual signing below. The term \"Effective Date\" means the first day of employment. All references to compensation, benefits, and policies are subject to the schedules attached hereto.",
+    "TITLE AND DUTIES: The Employee shall serve in the capacity of [Title]. The Employee shall report to [Supervisor] and shall perform such duties as are customarily associated with the position and as may be assigned from time to time by the Employer. The Employee agrees to comply with all applicable policies and procedures of the Employer.",
+    "COMPENSATION: The Employer shall pay the Employee a base salary as set forth in Schedule A. Payment shall be made bi-weekly in arrears. The salary shall be reviewed annually and may be adjusted at the sole discretion of the Employer. The Employee shall be eligible for benefits in accordance with company policy as described in Schedule B.",
+    "BONUS AND INCENTIVES: The Employee may be eligible to participate in annual bonus and incentive plans as established by the Employer. Any bonus payment shall be discretionary and subject to the achievement of performance goals and the continued employment of the Employee through the payment date.",
+    "BENEFITS: The Employee shall be eligible to participate in all benefit plans generally available to similarly situated employees of the Employer, including but not limited to health insurance, dental and vision coverage, retirement plans, and paid time off. Eligibility and terms are governed by the applicable plan documents and company policy.",
+    "WORK SCHEDULE: The Employee's normal work schedule shall be as determined by the Employer. The Employee may be required to work additional hours, including evenings and weekends, as necessary to fulfill the duties of the position. Travel may be required from time to time.",
+    "CONFIDENTIALITY: The Employee agrees to hold in strict confidence all confidential information of the Employer, including trade secrets, business plans, customer lists, and financial data. This obligation shall survive the termination of employment for a period of three (3) years. The Employee shall not disclose or use such information except as required in the performance of duties.",
+    "INTELLECTUAL PROPERTY: All inventions, developments, and works of authorship created by the Employee during the term of employment that relate to the business of the Employer shall be the sole property of the Employer. The Employee agrees to assign all such rights to the Employer and to cooperate in securing any necessary patents or copyrights.",
+    "NON-COMPETITION AND NON-SOLICITATION: During the term of employment and for twelve (12) months following termination, the Employee shall not compete with the Employer within the geographic area and business lines described in Schedule C. The Employee further agrees not to solicit the Employer's employees or customers during such period.",
+    "TERM AND TERMINATION: This agreement shall remain in effect until terminated. Either party may terminate this Contract with thirty (30) days written notice. The Employer may terminate the Employee immediately for cause, including but not limited to breach of this agreement, misconduct, or failure to perform duties. Upon termination, the Employee shall return all company property, including documents, keys, and equipment.",
+    "SEVERANCE: In the event of termination without cause, the Employee may be entitled to severance pay and continued benefits as set forth in Schedule D. Severance is contingent upon the Employee's execution of a release of claims and compliance with the post-employment obligations in this agreement.",
+    "GOVERNING LAW AND DISPUTES: This agreement shall be governed by the laws of the state in which the Employer's principal office is located. Any dispute arising out of or relating to this agreement or the employment relationship shall be resolved by binding arbitration in accordance with the rules of the American Arbitration Association.",
+    "ENTIRE AGREEMENT: This document, together with the schedules and any written amendments signed by both parties, constitutes the entire agreement between the Employer and the Employee regarding the subject matter hereof and supersedes all prior negotiations, representations, and agreements. No modification shall be effective unless in writing and signed by both parties.",
+    "ACKNOWLEDGMENT: By signing below, the Employee acknowledges that he or she has read and understood this agreement, has had the opportunity to seek legal advice, and agrees to be bound by its terms. The Employer and the Employee have executed this Contract of Hiring as of the date first written above.",
   ];
 
   return new Promise((resolve, reject) => {

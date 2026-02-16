@@ -178,7 +178,7 @@ const SearchPage: React.FC = () => {
       await insertSampleContent();
       toast({
         title: "Sample text inserted",
-        description: "Search for \"Employee\", \"Employer\", \"Contract\", or \"termination\" to test.",
+        description: "Try searching for \"Employee\", \"salary\", \"confidentiality\", \"termination\", or \"schedule\".",
         status: "success",
         duration: 4000,
       });
