@@ -46,7 +46,7 @@ export async function searchWordDocument(
         const searchResults = body.search(trimmed, searchOpts);
         searchResults.load("items");
         return context.sync().then(function () {
-          return searchResults.items;
+          return Array.from(searchResults.items);
         });
       }
 
@@ -56,12 +56,16 @@ export async function searchWordDocument(
         const useItems = items.length > 0 ? items : null;
         if (useItems === null && preferWholeWord) {
           return runSearch(optsPartial).then(function (partialItems: Word.Range[]) {
-            return partialItems;
+            return Array.from(partialItems);
           });
         }
         return Promise.resolve(useItems || []);
       }).then(function (items: Word.Range[]) {
         const top3 = items.slice(0, 3);
+        if (top3.length === 0) {
+          resolve([]);
+          return Promise.resolve();
+        }
         const paragraphs: { text?: string }[] = [];
         top3.forEach(function (range) {
           range.load("text");
@@ -72,8 +76,8 @@ export async function searchWordDocument(
         return context.sync().then(function () {
           const results: SearchResultItem[] = top3.map(function (range, i) {
             return {
-              paragraphText: paragraphs[i].text || "",
-              matchText: range.text || "",
+              paragraphText: (paragraphs[i] && paragraphs[i].text) != null ? paragraphs[i].text! : "",
+              matchText: range.text != null ? range.text : "",
             };
           });
           resolve(results);

@@ -25,16 +25,35 @@ const CONTEXT_WORDS_BEFORE = 2;
 const CONTEXT_WORDS_AFTER = 2;
 
 /**
+ * Finds the start index of the nth occurrence of matchText in text (case-insensitive).
+ * occurrenceIndex is 0-based.
+ */
+function findNthMatchIndex(text: string, matchText: string, occurrenceIndex: number): number {
+  if (!matchText.trim() || occurrenceIndex < 0) return -1;
+  const lower = text.toLowerCase();
+  const matchLower = matchText.toLowerCase();
+  let idx = 0;
+  for (let n = 0; n <= occurrenceIndex; n++) {
+    const pos = lower.indexOf(matchLower, idx);
+    if (pos === -1) return -1;
+    if (n === occurrenceIndex) return pos;
+    idx = pos + matchText.length;
+  }
+  return -1;
+}
+
+/**
  * Returns 2 words before + match + 2 words after from the paragraph for context.
- * Uses matchText to find position (case-insensitive) and preserves original casing.
+ * occurrenceIndexInParagraph: when the same paragraph has multiple matches, pass 0 for first, 1 for second, etc.
  */
 function getContextSnippet(
   paragraphText: string,
-  matchText: string
+  matchText: string,
+  occurrenceIndexInParagraph: number = 0
 ): { before: string; match: string; after: string } {
   if (!matchText.trim()) return { before: paragraphText, match: "", after: "" };
   const text = paragraphText || "";
-  const idx = text.toLowerCase().indexOf(matchText.toLowerCase());
+  const idx = findNthMatchIndex(text, matchText, occurrenceIndexInParagraph);
   if (idx === -1) return { before: text, match: matchText, after: "" };
   const endIdx = idx + matchText.length;
   const beforeRaw = text.slice(0, idx).trim();
@@ -223,15 +242,15 @@ const SearchPage: React.FC = () => {
     setLoading(true);
     try {
       await clearAllHighlights();
-      const count = await highlightAllSearchMatches(query, {
-        matchCase: caseSensitive,
-        matchWholeWordFirst: true,
-      });
       const items = await searchWordDocument(query, {
         matchCase: caseSensitive,
         matchWholeWordFirst: true,
       });
       setResults(items);
+      const count = await highlightAllSearchMatches(query, {
+        matchCase: caseSensitive,
+        matchWholeWordFirst: true,
+      });
       if (count === 0) {
         toast({ title: "No matches found", status: "info", duration: 2000 });
       } else {
@@ -391,9 +410,13 @@ const SearchPage: React.FC = () => {
                 m={0}
               >
                 {results.map((item, index) => {
+                  const occurrenceInParagraph = results
+                    .slice(0, index)
+                    .filter((r) => r.paragraphText === item.paragraphText).length;
                   const { before, match, after } = getContextSnippet(
                     item.paragraphText,
-                    item.matchText
+                    item.matchText,
+                    occurrenceInParagraph
                   );
                   return (
                     <Box
