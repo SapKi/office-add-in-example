@@ -11,7 +11,39 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { keyframes } from "@emotion/react";
-import { searchWordDocument, isWordAvailable, insertSampleContent } from "../wordSearch";
+import {
+  searchWordDocument,
+  isWordAvailable,
+  insertSampleContent,
+  selectAndHighlightResult,
+  type SearchResultItem,
+} from "../wordSearch";
+
+const CONTEXT_WORDS_BEFORE = 2;
+const CONTEXT_WORDS_AFTER = 2;
+
+/**
+ * Returns 2 words before + match + 2 words after from the paragraph for context.
+ * Uses matchText to find position (case-insensitive) and preserves original casing.
+ */
+function getContextSnippet(
+  paragraphText: string,
+  matchText: string
+): { before: string; match: string; after: string } {
+  if (!matchText.trim()) return { before: paragraphText, match: "", after: "" };
+  const text = paragraphText || "";
+  const idx = text.toLowerCase().indexOf(matchText.toLowerCase());
+  if (idx === -1) return { before: text, match: matchText, after: "" };
+  const endIdx = idx + matchText.length;
+  const beforeRaw = text.slice(0, idx).trim();
+  const afterRaw = text.slice(endIdx).trim();
+  const wordsBefore = beforeRaw.split(/\s+/).filter(Boolean).slice(-CONTEXT_WORDS_BEFORE);
+  const wordsAfter = afterRaw.split(/\s+/).filter(Boolean).slice(0, CONTEXT_WORDS_AFTER);
+  const before = wordsBefore.join(" ");
+  const match = text.slice(idx, endIdx);
+  const after = wordsAfter.join(" ");
+  return { before, match, after };
+}
 
 // Beautiful animations using Emotion keyframes
 const fadeInUp = keyframes`
@@ -83,7 +115,7 @@ const bounceUpDown = keyframes`
 const SearchPage: React.FC = () => {
   const [query, setQuery] = useState("");
   const [caseSensitive, setCaseSensitive] = useState(false);
-  const [results, setResults] = useState<string[]>([]);
+  const [results, setResults] = useState<SearchResultItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [inserting, setInserting] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -94,6 +126,39 @@ const SearchPage: React.FC = () => {
     // Trigger animations on mount
     setMounted(true);
   }, []);
+
+  // Search as you type (debounced)
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      return () => {};
+    }
+    if (!isWordAvailable()) {
+      setResults([]);
+      return () => {};
+    }
+    const timer = setTimeout(() => {
+      setLoading(true);
+      searchWordDocument(query, { matchCase: caseSensitive })
+        .then((items) => {
+          setResults(items);
+        })
+        .catch((err) => {
+          console.error("Search error:", err);
+          setResults([]);
+          toast({
+            title: "Search failed",
+            description: err instanceof Error ? err.message : "Unknown error",
+            status: "error",
+            duration: 4000,
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [query, caseSensitive, toast]);
 
   const handleInsertSample = useCallback(async () => {
     // Mark button as clicked to stop bouncing animation
@@ -147,9 +212,9 @@ const SearchPage: React.FC = () => {
     setLoading(true);
     setResults([]);
     try {
-      const top3 = await searchWordDocument(query, { matchCase: caseSensitive });
-      setResults(top3);
-      if (top3.length === 0) {
+      const items = await searchWordDocument(query, { matchCase: caseSensitive });
+      setResults(items);
+      if (items.length === 0) {
         toast({ title: "No matches found", status: "info", duration: 2000 });
       }
     } catch (err) {
@@ -163,6 +228,29 @@ const SearchPage: React.FC = () => {
       setLoading(false);
     }
   }, [query, caseSensitive, toast]);
+
+  const handleResultClick = useCallback(
+    async (index: number) => {
+      if (!query.trim() || !isWordAvailable()) return;
+      try {
+        await selectAndHighlightResult(query, { matchCase: caseSensitive }, index);
+        toast({
+          title: "Location highlighted",
+          description: "The match is selected and highlighted in the document.",
+          status: "success",
+          duration: 2000,
+        });
+      } catch (err) {
+        toast({
+          title: "Could not highlight",
+          description: err instanceof Error ? err.message : "Unknown error",
+          status: "error",
+          duration: 3000,
+        });
+      }
+    },
+    [query, caseSensitive, toast]
+  );
 
   const wordAvailable = isWordAvailable();
 
@@ -198,7 +286,7 @@ const SearchPage: React.FC = () => {
             opacity: mounted ? 1 : 0,
           }}
         >
-          Search the current Word document. Top 3 results are shown below.
+          Search the document; top 3 results appear in a list under the search box. Click a result to highlight it in the document.
         </Text>
 
         <Box
@@ -237,27 +325,77 @@ const SearchPage: React.FC = () => {
         </Box>
 
         <Box
+          w="100%"
           sx={{
             animation: mounted ? `${scaleIn} 0.7s ease-out 0.4s both` : "none",
             opacity: mounted ? 1 : 0,
           }}
         >
-          <Input
-            placeholder="Enter search query"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            size="md"
-            bg="white"
-            borderColor="purple.300"
-            focusBorderColor="purple.500"
-            _focus={{
-              boxShadow: "0 0 0 3px rgba(147, 51, 234, 0.2)",
-              borderColor: "purple.500",
-            }}
-            _hover={{ borderColor: "purple.400" }}
-            transition="all 0.2s"
-          />
+          <VStack align="stretch" spacing={0} w="100%">
+            <Input
+              placeholder="Enter search query"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              size="md"
+              bg="white"
+              borderColor="purple.300"
+              focusBorderColor="purple.500"
+              _focus={{
+                boxShadow: "0 0 0 3px rgba(147, 51, 234, 0.2)",
+                borderColor: "purple.500",
+              }}
+              _hover={{ borderColor: "purple.400" }}
+              transition="all 0.2s"
+            />
+            {results.length > 0 && (
+              <Box
+                w="100%"
+                mt={2}
+                mb={0}
+                bg="white"
+                borderRadius="md"
+                borderWidth="1px"
+                borderColor="gray.200"
+                boxShadow="sm"
+                maxH="200px"
+                overflowY="auto"
+                as="ul"
+                listStyleType="none"
+                p={0}
+                m={0}
+              >
+                {results.map((item, index) => {
+                  const { before, match, after } = getContextSnippet(
+                    item.paragraphText,
+                    item.matchText
+                  );
+                  return (
+                    <Box
+                      key={index}
+                      as="li"
+                      px={3}
+                      py={2}
+                      cursor="pointer"
+                      _hover={{ bg: "gray.50" }}
+                      transition="background 0.15s"
+                      onClick={() => handleResultClick(index)}
+                      borderBottomWidth={index < results.length - 1 ? 1 : 0}
+                      borderColor="gray.100"
+                    >
+                      <Text fontSize="sm" color="gray.700" noOfLines={2}>
+                        {before && <Text as="span">{before} </Text>}
+                        <Text as="span" bg="yellow.200" fontWeight="bold" px={0.5}>
+                          {match}
+                        </Text>
+                        {after && <Text as="span"> {after}</Text>}
+                      </Text>
+                    </Box>
+                  );
+                })}
+              </Box>
+            )}
+          </VStack>
         </Box>
 
         <Box
@@ -324,61 +462,6 @@ const SearchPage: React.FC = () => {
             <Text fontSize="sm" color="orange.700" fontWeight="medium">
               ⚠️ Run this add-in inside Word to search the document.
             </Text>
-          </Box>
-        )}
-
-        {results.length > 0 && (
-          <Box
-            mt={4}
-            w="100%"
-            sx={{
-              animation: `${fadeInUp} 0.6s ease-out`,
-            }}
-          >
-            <Heading
-              size="sm"
-              mb={3}
-              bgGradient="linear(to-r, green.600, emerald.600)"
-              bgClip="text"
-              fontWeight="bold"
-            >
-              ✨ Top 3 results
-            </Heading>
-            <VStack align="stretch" spacing={3}>
-              {results.map((text, index) => {
-                const colors = [
-                  { bg: "purple.50", border: "purple.300", hoverBg: "purple.100" },
-                  { bg: "blue.50", border: "blue.300", hoverBg: "blue.100" },
-                  { bg: "cyan.50", border: "cyan.300", hoverBg: "cyan.100" },
-                ];
-                const colorScheme = colors[index] || colors[0];
-                return (
-                  <Box
-                    key={index}
-                    p={4}
-                    bg={colorScheme.bg}
-                    borderRadius="lg"
-                    borderWidth="2px"
-                    borderColor={colorScheme.border}
-                    sx={{
-                      animation: `${fadeInUp} 0.5s ease-out ${index * 0.1}s both`,
-                    }}
-                    _hover={{
-                      bg: colorScheme.hoverBg,
-                      borderColor: colorScheme.border,
-                      transform: "translateX(6px) scale(1.02)",
-                      boxShadow: "md",
-                      transition: "all 0.2s",
-                    }}
-                    transition="all 0.2s"
-                  >
-                    <Text fontSize="sm" color="gray.700" fontWeight="medium" noOfLines={3}>
-                      {text || "(empty)"}
-                    </Text>
-                  </Box>
-                );
-              })}
-            </VStack>
           </Box>
         )}
       </VStack>

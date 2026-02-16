@@ -1,6 +1,6 @@
 /**
  * Word document search using the Word JavaScript API.
- * Returns the text of the first 3 matches (top 3 search results).
+ * Returns the top 3 matches with full paragraph context for each.
  */
 
 /* global Word */
@@ -9,14 +9,21 @@ export interface WordSearchOptions {
   matchCase: boolean;
 }
 
+export interface SearchResultItem {
+  /** Full text of the paragraph containing the match (for context). */
+  paragraphText: string;
+  /** The exact matched text (from the range). */
+  matchText: string;
+}
+
 /**
- * Searches the Word document for the given query and returns the text of the top 3 matches.
+ * Searches the Word document and returns the top 3 matches with paragraph context.
  * Only works when the add-in is running inside Word.
  */
 export async function searchWordDocument(
   query: string,
   options: WordSearchOptions
-): Promise<string[]> {
+): Promise<SearchResultItem[]> {
   if (typeof Word === "undefined") {
     return [];
   }
@@ -33,20 +40,71 @@ export async function searchWordDocument(
       return context.sync().then(function () {
         const items = searchResults.items;
         const top3 = items.slice(0, 3);
+        const paragraphs: { text?: string }[] = [];
         top3.forEach(function (range) {
           range.load("text");
+          const para = range.paragraphs.getFirst();
+          para.load("text");
+          paragraphs.push(para);
         });
         return context.sync().then(function () {
-          const texts = top3.map(function (range) {
-            return range.text || "";
+          const results: SearchResultItem[] = top3.map(function (range, i) {
+            return {
+              paragraphText: paragraphs[i].text || "",
+              matchText: range.text || "",
+            };
           });
-          resolve(texts);
+          resolve(results);
         });
       });
     }).catch(function (err) {
       console.error("Word search error:", err);
       reject(err);
     });
+  });
+}
+
+/**
+ * Selects and highlights the Nth search result (0-based index) in the document.
+ * Call after searchWordDocument; uses the same query and options to find the same match.
+ */
+export function selectAndHighlightResult(
+  query: string,
+  options: WordSearchOptions,
+  resultIndex: number
+): Promise<void> {
+  if (typeof Word === "undefined") {
+    return Promise.reject(new Error("Word API not available. Open the add-in inside Word."));
+  }
+
+  const trimmed = query.trim();
+  if (!trimmed) return Promise.reject(new Error("Query is empty."));
+
+  return new Promise((resolve, reject) => {
+    Word.run(function (context) {
+      const searchResults = context.document.body.search(trimmed, {
+        matchCase: options.matchCase,
+      });
+      searchResults.load("items");
+      return context.sync().then(function () {
+        const items = searchResults.items;
+        if (resultIndex < 0 || resultIndex >= items.length) {
+          reject(new Error("Invalid result index."));
+          return context.sync();
+        }
+        const range = items[resultIndex];
+        range.select();
+        range.font.highlightColor = "#FFFF00";
+        return context.sync();
+      });
+    })
+      .then(function () {
+        resolve();
+      })
+      .catch(function (err) {
+        console.error("Word select/highlight error:", err);
+        reject(err);
+      });
   });
 }
 
