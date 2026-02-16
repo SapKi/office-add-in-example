@@ -45,6 +45,7 @@ function findNthMatchIndex(text: string, matchText: string, occurrenceIndex: num
 /**
  * Returns 2 words before + match + 2 words after from the paragraph for context.
  * occurrenceIndexInParagraph: when the same paragraph has multiple matches, pass 0 for first, 1 for second, etc.
+ * All text is taken from the document as-is (no capitalization or trimming of case).
  */
 function getContextSnippet(
   paragraphText: string,
@@ -148,7 +149,7 @@ const SearchPage: React.FC = () => {
     setMounted(true);
   }, []);
 
-  // Search as you type (debounced). Clear all highlights in the document on each search.
+  // Search as you type (debounced). Does not block typing: no loading state, longer debounce.
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
@@ -162,7 +163,6 @@ const SearchPage: React.FC = () => {
       return () => {};
     }
     const timer = setTimeout(() => {
-      setLoading(true);
       clearAllHighlights()
         .then(() =>
           searchWordDocument(query, {
@@ -182,11 +182,8 @@ const SearchPage: React.FC = () => {
             status: "error",
             duration: 4000,
           });
-        })
-        .finally(() => {
-          setLoading(false);
         });
-    }, 400);
+    }, 550);
     return () => clearTimeout(timer);
   }, [query, caseSensitive, toast]);
 
@@ -385,6 +382,8 @@ const SearchPage: React.FC = () => {
               bg="white"
               borderColor="purple.300"
               focusBorderColor="purple.500"
+              autoComplete="off"
+              sx={{ textTransform: "none" }}
               _focus={{
                 boxShadow: "0 0 0 3px rgba(147, 51, 234, 0.2)",
                 borderColor: "purple.500",
@@ -431,7 +430,12 @@ const SearchPage: React.FC = () => {
                       borderBottomWidth={index < results.length - 1 ? 1 : 0}
                       borderColor="gray.100"
                     >
-                      <Text fontSize="sm" color="gray.700" noOfLines={2}>
+                      <Text
+                        fontSize="sm"
+                        color="gray.700"
+                        noOfLines={2}
+                        sx={{ textTransform: "none" }}
+                      >
                         {before && <Text as="span">{before} </Text>}
                         <Text as="span" bg="yellow.200" fontWeight="bold" px={0.5}>
                           {match}
