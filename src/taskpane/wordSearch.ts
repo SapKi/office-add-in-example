@@ -19,13 +19,14 @@ export interface SearchResultItem {
 }
 
 /**
- * Searches the Word document and returns the top 3 matches with paragraph context.
+ * Searches the Word document and returns up to maxResults matches with paragraph context.
  * When matchWholeWordFirst is true (default): tries full-word match first; if no results, falls back to partial (contain) match.
  * Only works when the add-in is running inside Word.
  */
 export async function searchWordDocument(
   query: string,
-  options: WordSearchOptions
+  options: WordSearchOptions,
+  maxResults: number = 3
 ): Promise<SearchResultItem[]> {
   if (typeof Word === "undefined") {
     return [];
@@ -35,6 +36,7 @@ export async function searchWordDocument(
   if (!trimmed) return [];
 
   const preferWholeWord = options.matchWholeWordFirst !== false;
+  const limit = Math.max(1, Math.min(maxResults, 50));
 
   return new Promise((resolve, reject) => {
     Word.run(function (context) {
@@ -61,20 +63,20 @@ export async function searchWordDocument(
         }
         return Promise.resolve(useItems || []);
       }).then(function (items: Word.Range[]) {
-        const top3 = items.slice(0, 3);
-        if (top3.length === 0) {
+        const topN = items.slice(0, limit);
+        if (topN.length === 0) {
           resolve([]);
           return Promise.resolve();
         }
         const paragraphs: { text?: string }[] = [];
-        top3.forEach(function (range) {
+        topN.forEach(function (range) {
           range.load("text");
           const para = range.paragraphs.getFirst();
           para.load("text");
           paragraphs.push(para);
         });
         return context.sync().then(function () {
-          const results: SearchResultItem[] = top3.map(function (range, i) {
+          const results: SearchResultItem[] = topN.map(function (range, i) {
             return {
               paragraphText: (paragraphs[i] && paragraphs[i].text) != null ? paragraphs[i].text! : "",
               matchText: range.text != null ? range.text : "",

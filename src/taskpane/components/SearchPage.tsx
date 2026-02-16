@@ -134,15 +134,22 @@ const bounceUpDown = keyframes`
  * - Checkbox: Case sensitive on/off
  * - Top 3 search results displayed in the add-in
  */
+const RESULTS_PAGE_SIZE = 3;
+const MAX_SEARCH_RESULTS = 10;
+
 const SearchPage: React.FC = () => {
   const [query, setQuery] = useState("");
   const [caseSensitive, setCaseSensitive] = useState(false);
-  const [results, setResults] = useState<SearchResultItem[]>([]);
+  const [allResults, setAllResults] = useState<SearchResultItem[]>([]);
+  const [displayStart, setDisplayStart] = useState(0);
   const [loading, setLoading] = useState(false);
   const [inserting, setInserting] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [sampleButtonClicked, setSampleButtonClicked] = useState(false);
   const toast = useToast();
+
+  const results = allResults.slice(displayStart, displayStart + RESULTS_PAGE_SIZE);
+  const hasNext = allResults.length > RESULTS_PAGE_SIZE && displayStart < allResults.length - RESULTS_PAGE_SIZE;
 
   useEffect(() => {
     // Trigger animations on mount
@@ -152,14 +159,16 @@ const SearchPage: React.FC = () => {
   // Search as you type (debounced). Does not block typing: no loading state, longer debounce.
   useEffect(() => {
     if (!query.trim()) {
-      setResults([]);
+      setAllResults([]);
+      setDisplayStart(0);
       if (isWordAvailable()) {
         clearAllHighlights().catch(() => {});
       }
       return () => {};
     }
     if (!isWordAvailable()) {
-      setResults([]);
+      setAllResults([]);
+      setDisplayStart(0);
       return () => {};
     }
     const timer = setTimeout(() => {
@@ -168,14 +177,16 @@ const SearchPage: React.FC = () => {
           searchWordDocument(query, {
             matchCase: caseSensitive,
             matchWholeWordFirst: true,
-          })
+          }, MAX_SEARCH_RESULTS)
         )
         .then((items) => {
-          setResults(items);
+          setAllResults(items);
+          setDisplayStart(0);
         })
         .catch((err) => {
           console.error("Search error:", err);
-          setResults([]);
+          setAllResults([]);
+          setDisplayStart(0);
           toast({
             title: "Search failed",
             description: err instanceof Error ? err.message : "Unknown error",
@@ -233,7 +244,8 @@ const SearchPage: React.FC = () => {
         status: "info",
         duration: 4000,
       });
-      setResults([]);
+      setAllResults([]);
+      setDisplayStart(0);
       return;
     }
     setLoading(true);
@@ -242,8 +254,9 @@ const SearchPage: React.FC = () => {
       const items = await searchWordDocument(query, {
         matchCase: caseSensitive,
         matchWholeWordFirst: true,
-      });
-      setResults(items);
+      }, MAX_SEARCH_RESULTS);
+      setAllResults(items);
+      setDisplayStart(0);
       const count = await highlightAllSearchMatches(query, {
         matchCase: caseSensitive,
         matchWholeWordFirst: true,
@@ -271,10 +284,15 @@ const SearchPage: React.FC = () => {
   }, [query, caseSensitive, toast]);
 
   const handleResultClick = useCallback(
-    async (index: number) => {
+    async (visibleIndex: number) => {
       if (!query.trim() || !isWordAvailable()) return;
+      const globalIndex = displayStart + visibleIndex;
       try {
-        await selectAndHighlightResult(query, { matchCase: caseSensitive }, index);
+        await clearAllHighlights();
+        await selectAndHighlightResult(query, {
+          matchCase: caseSensitive,
+          matchWholeWordFirst: true,
+        }, globalIndex);
         toast({
           title: "Location highlighted",
           description: "The match is selected and highlighted in the document.",
@@ -290,8 +308,14 @@ const SearchPage: React.FC = () => {
         });
       }
     },
-    [query, caseSensitive, toast]
+    [query, caseSensitive, displayStart, toast]
   );
+
+  const handleNextResults = useCallback(() => {
+    setDisplayStart((prev) =>
+      Math.min(prev + 1, Math.max(0, allResults.length - RESULTS_PAGE_SIZE))
+    );
+  }, [allResults.length]);
 
   const wordAvailable = isWordAvailable();
 
@@ -409,8 +433,9 @@ const SearchPage: React.FC = () => {
                 m={0}
               >
                 {results.map((item, index) => {
-                  const occurrenceInParagraph = results
-                    .slice(0, index)
+                  const globalIndex = displayStart + index;
+                  const occurrenceInParagraph = allResults
+                    .slice(0, globalIndex)
                     .filter((r) => r.paragraphText === item.paragraphText).length;
                   const { before, match, after } = getContextSnippet(
                     item.paragraphText,
@@ -419,7 +444,7 @@ const SearchPage: React.FC = () => {
                   );
                   return (
                     <Box
-                      key={index}
+                      key={globalIndex}
                       as="li"
                       px={3}
                       py={2}
@@ -446,6 +471,18 @@ const SearchPage: React.FC = () => {
                   );
                 })}
               </Box>
+            )}
+            {results.length > 0 && hasNext && (
+              <Button
+                size="sm"
+                variant="outline"
+                colorScheme="blue"
+                mt={2}
+                onClick={handleNextResults}
+                w="100%"
+              >
+                Next results →
+              </Button>
             )}
           </VStack>
         </Box>
