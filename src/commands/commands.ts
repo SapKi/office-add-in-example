@@ -9,10 +9,9 @@ Office.onReady(() => {
   // If needed, Office.js is ready to be called.
 });
 
-/**
- * Shows a notification when the add-in command is executed.
- * @param event
- */
+// Event handler registration removed to prevent debug dialog
+// If you need command handlers, uncomment and implement:
+/*
 function action(event: Office.AddinCommands.Event) {
   const message: Office.NotificationMessageDetails = {
     type: Office.MailboxEnums.ItemNotificationMessageType.InformationalMessage,
@@ -20,13 +19,9 @@ function action(event: Office.AddinCommands.Event) {
     icon: "Icon.80x80",
     persistent: true,
   };
-
-  // Show a notification message.
   Office.context.mailbox.item?.notificationMessages.replaceAsync("ActionPerformanceNotification", message);
-
-  // Be sure to indicate when the add-in command function is complete.
   event.completed();
 }
 
-// Register the function with Office.
 Office.actions.associate("action", action);
+*/

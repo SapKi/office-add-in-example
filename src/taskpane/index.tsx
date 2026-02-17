@@ -1,13 +1,32 @@
+/// <reference path="../chakra-ui-react.d.ts" />
 import * as React from "react";
 import { createRoot } from "react-dom/client";
-import App from "./components/App";
+import { ChakraProvider, Box } from "@chakra-ui/react";
+import SearchPage from "./components/SearchPage";
 
 /* global document, Office, HTMLElement */
 
 const rootElement: HTMLElement | null = document.getElementById("container");
 const root = rootElement ? createRoot(rootElement) : undefined;
 
-/* Render application after Office initializes */
-Office.onReady(() => {
-  root?.render(<App />);
-});
+let rendered = false;
+function renderApp(): void {
+  if (rendered || !root) return;
+  rendered = true;
+  root.render(
+    <ChakraProvider>
+      <Box w="100%" h="100%" minH="100%">
+        <SearchPage />
+      </Box>
+    </ChakraProvider>
+  );
+}
+
+/* Render when running inside Office */
+if (typeof Office !== "undefined" && Office.onReady) {
+  Office.onReady(() => renderApp());
+  /* Fallback: render after 2s if Office never becomes ready (e.g. opened in plain browser) */
+  setTimeout(renderApp, 2000);
+} else {
+  renderApp();
+}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dependencies
 node_modules/
 
@@ -12,3 +13,6 @@ dist/
 *.log
 .env
 .env.local
+=======
+node_modules
+>>>>>>> 209cb9b75a53fc965e5355eea840c155bc1c5d13
