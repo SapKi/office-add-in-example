@@ -376,7 +376,34 @@ const SearchPage: React.FC = () => {
             animation: mounted ? `${fadeInUp} 0.8s ease-out 0.1s both` : "none",
             opacity: mounted ? 1 : 0,
           }}
+          display="flex"
+          alignItems="center"
+          gap={2}
         >
+          <Box
+            as="span"
+            display="inline-flex"
+            alignItems="center"
+            justifyContent="center"
+            w={8}
+            h={8}
+            flexShrink={0}
+            color="purple.600"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+              style={{ width: "100%", height: "100%" }}
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+          </Box>
           Document Search
         </Heading>
         <Text
