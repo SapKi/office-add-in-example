@@ -62,7 +62,8 @@ function getContextSnippet(
   const wordsBefore = beforeRaw.split(/\s+/).filter(Boolean).slice(-CONTEXT_WORDS_BEFORE);
   const wordsAfter = afterRaw.split(/\s+/).filter(Boolean).slice(0, CONTEXT_WORDS_AFTER);
   const before = wordsBefore.join(" ");
-  const match = text.slice(idx, endIdx);
+  // Use matchText from the document so the result always shows exact letters (important when case sensitive is on)
+  const match = matchText;
   const after = wordsAfter.join(" ");
   return { before, match, after };
 }
@@ -151,6 +152,8 @@ const SearchPage: React.FC = () => {
   const toast = useToast();
   const toastRef = useRef(toast);
   toastRef.current = toast;
+  const prevQueryRef = useRef(query);
+  const prevCaseSensitiveRef = useRef(caseSensitive);
 
   const results = allResults.slice(displayStart, displayStart + RESULTS_PAGE_SIZE);
   const hasPrevious = displayStart > 0;
@@ -161,7 +164,7 @@ const SearchPage: React.FC = () => {
     setMounted(true);
   }, []);
 
-  // Search as you type (debounced). Does not block typing: no loading state, longer debounce.
+  // Search as you type (debounced). When only case-sensitive toggles, rerun search immediately.
   useEffect(() => {
     if (!query.trim()) {
       setAllResults([]);
@@ -169,13 +172,23 @@ const SearchPage: React.FC = () => {
       if (isWordAvailable()) {
         clearAllHighlights().catch(() => {});
       }
+      prevQueryRef.current = query;
+      prevCaseSensitiveRef.current = caseSensitive;
       return () => {};
     }
     if (!isWordAvailable()) {
       setAllResults([]);
       setDisplayStart(0);
+      prevQueryRef.current = query;
+      prevCaseSensitiveRef.current = caseSensitive;
       return () => {};
     }
+    const onlyCaseSensitiveChanged =
+      prevQueryRef.current === query && prevCaseSensitiveRef.current !== caseSensitive;
+    prevQueryRef.current = query;
+    prevCaseSensitiveRef.current = caseSensitive;
+    const delayMs = onlyCaseSensitiveChanged ? 0 : 550;
+
     const timer = setTimeout(() => {
       clearAllHighlights()
         .then(() =>
@@ -198,7 +211,7 @@ const SearchPage: React.FC = () => {
             duration: 4000,
           });
         });
-    }, 550);
+    }, delayMs);
     return () => clearTimeout(timer);
   }, [query, caseSensitive]);
 
