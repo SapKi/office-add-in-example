@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Lock file from interrupted Git operations
+.git/index.lock
+
+# OS and editor
+.DS_Store
+*.log
+.env
+.env.local
